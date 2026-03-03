@@ -28,6 +28,8 @@
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
     "@eslint/js": "^9.39.1",
     "@types/geojson": "^7946.0.16",
     "@types/node": "^24.10.1",
