@@ -1,13 +1,5 @@
-import ElectionsDashboard from './components/ElectionsDashboard'
-import { ThemeProvider } from './context/ThemeContext'
-import './App.css'
-
 function App() {
-  return (
-    <ThemeProvider>
-      <ElectionsDashboard />
-    </ThemeProvider>
-  )
-}
+  return (<div></div>);
+} 
 
-export default App
+export default App;
