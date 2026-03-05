@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useTaiwanMap } from "@/hooks/useTaiwanMap";
 import { PARTY_COLORS, type CountyResult } from "@/types/elections";
 import type { CountiesTopology, CountyProperties } from "@/types/map";
+import MapLegend from "@/components/Map/MapLegend";
 
 interface TaiwanMainMapProps {
   topology: CountiesTopology | null;
@@ -11,6 +12,7 @@ interface TaiwanMainMapProps {
 const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [activeParties] = useState();
 
   // Dynamically update dimensions on container resize
   useEffect(() => {
@@ -67,6 +69,11 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
             })}
           </svg>
         )}
+      </div>
+
+      {/* Legend */}
+      <div className="pt-3 border-t border-border">
+        <MapLegend activeParties={activeParties} />
       </div>
     </div>
   );

@@ -18,10 +18,22 @@ export const PARTY_COLORS: Record<Party, string> = {
   TSU: "#D6B890",
   GPT: "#A3C75A",
   IND: "#B4BCC4",
-  EMPTY: "#F6F7F8",
+  EMPTY: "#D3D3D3",
 };
 
-export const PARTY_SHORT_NAMES: Record<Party, string> = {
+export const PARTY_NAMES: Record<Party, string> = {
+  KMT: "中國國民黨",
+  DPP: "民主進步黨",
+  TPP: "台灣民眾黨",
+  NPP: "時代力量",
+  PFP: "親民黨",
+  TSU: "台灣團結聯盟",
+  GPT: "綠黨",
+  IND: "無黨籍",
+  EMPTY: "尚未開票/票數相同",
+};
+
+export const PARTY_SHORT_NAMES: Record<Exclude<Party, "EMPTY">, string> = {
   KMT: "國",
   DPP: "民",
   TPP: "眾",
@@ -30,7 +42,6 @@ export const PARTY_SHORT_NAMES: Record<Party, string> = {
   TSU: "團",
   GPT: "綠",
   IND: "無",
-  EMPTY: "",
 };
 
 export interface Candidate {
