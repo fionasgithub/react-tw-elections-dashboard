@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useTaiwanMap } from "@/hooks/useTaiwanMap";
-import { type Party, PARTY_COLORS } from "@/types/elections";
+import { PARTY_COLORS, type CountyResult } from "@/types/elections";
 import type { CountiesTopology, CountyProperties } from "@/types/map";
 
 interface TaiwanMainMapProps {
   topology: CountiesTopology | null;
-  results?: Record<string, { winner?: Party }>;
+  results?: CountyResult[];
 }
 
 const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
@@ -23,7 +23,10 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
           {features.map((f) => {
             const props = f.properties as CountyProperties;
             const countyId = props.COUNTYCODE;
-            const winner = results?.[countyId]?.winner;
+            const countyResult = results?.find((r) => r.countyId === countyId);
+            const winner = countyResult?.candidates.find(
+              (c) => c.elected,
+            )?.party;
             const fillColor = winner ? PARTY_COLORS[winner] : "#D3D3D3";
 
             return (
