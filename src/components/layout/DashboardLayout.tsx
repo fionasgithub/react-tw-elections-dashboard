@@ -17,7 +17,7 @@ const DashboardLayout = ({
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15">
           <MapPin className="text-primary" />
         </div>
-        <h1 className="text-2xl font-bold">{title}</h1>
+        <h1 className="text-2xl font-bold text-foreground">{title}</h1>
         {isRealTime && (
           <div className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1">
             <div className="live-dot"></div>
