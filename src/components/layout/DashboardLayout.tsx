@@ -1,11 +1,33 @@
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => (
-  <div className="min-h-screen bg-slate-50 p-4 md:p-8">
-    <header className="mb-8">
-      <h1 className="text-3xl font-bold">2026 九合一選舉即時開票</h1>
-    </header>
-    <main className="grid grid-cols-12 gap-4 max-w-[1440px] mx-auto">
-      {children}
-    </main>
+import { MapPin } from "lucide-react";
+
+interface DashboardLayoutProps {
+  children: React.ReactNode;
+  title?: string;
+  isRealTime?: boolean;
+}
+
+const DashboardLayout = ({
+  children,
+  title = "即時開票地圖",
+  isRealTime = true,
+}: DashboardLayoutProps) => (
+  <div className="min-h-screen bg-background px-4 py-6 md:px-8 md:py-8">
+    <div className="mx-auto max-w-[1440px]">
+      <header className="flex items-center gap-4 mb-6">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15">
+          <MapPin className="text-primary" />
+        </div>
+        <h1 className="text-2xl font-bold">{title}</h1>
+        {isRealTime && (
+          <div className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1">
+            <div className="live-dot"></div>
+            <span className="text-xs">即時</span>
+          </div>
+        )}
+      </header>
+
+      <main className="grid grid-cols-12 gap-4">{children}</main>
+    </div>
   </div>
 );
 
