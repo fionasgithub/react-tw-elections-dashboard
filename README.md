@@ -1,73 +1,57 @@
-# React + TypeScript + Vite
+# React 即時開票地圖儀表板
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+模擬大選投票結束後，呈現各投開票所的即時開票狀況。
 
-Currently, two official plugins are available:
+## 作品簡介
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+本作品透過臺灣地圖一覽各選區目前票數領先的候選人或政黨，並提供開票概況、政黨席次分布與各縣市的最新開票結果。點選地圖中的縣市後，可檢視該縣市所有候選人的得票數，以及各鄉鎮市區的前三名。
 
-## React Compiler
+此專案為將先前與另一位前端工程師合作、於六角學院 2023 年參賽的 Vue 作品，在重新定義需求後以 React 重寫的版本。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+相關連結：
 
-## Expanding the ESLint configuration
+- 需求書: [spec-2026-elections-map.md](docs/spec-2026-elections-map.md)
+- 原 Vue 專案: [https://github.com/chunkimi/vote-inquiry](https://github.com/chunkimi/vote-inquiry)（因串接的 Firebase 資料已停用，示範頁面可能無資料）
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 設計稿
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+使用 Google Antigravity + UI UX Pro max skills 根據[需求書](docs/spec-2026-elections-map.md)產出的設計稿：
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+首頁:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+![首頁](docs/home_page.png)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+縣市詳情:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+![縣市詳情](docs/county_detail.png)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 使用技術
+
+- React
+  - react-router-dom
+- Shadcn UI
+  - Tailwind CSS
+  - lucide-react (icons)
+  - Radix UI
+- D3.js
+  - TopoJSON (topojson-client)
+
+## 開發工具
+
+- TypeScript
+- Vite
+- ESLint
+- Husky + Commitlint
+- npm
+
+## 資料來源
+
+政府資料開放平台
+
+- [直轄市、縣市界線(TWD97經緯度)](https://data.gov.tw/dataset/7442)
+- [鄉鎮市區界線(TWD97經緯度)](https://data.gov.tw/dataset/7441)
+
+## 困難點分享
+
+- 地圖資料來源缺漏：理想上應該可以顯示到村里的資訊，但因為[村里界圖](https://data.gov.tw/dataset/7438)的經緯度圖資來源有問題無法下載，故折衷只顯示到鄉鎮市區。
+- 設計稿產出：本來打算利用 [pencil.dev](https://www.pencil.dev/) 快速產出設計稿，但在嘗試使用 vscode 整合時，一直無法產出理想的設計稿，後來改用 antigravity + ui ux pro max skills 就完成了。
