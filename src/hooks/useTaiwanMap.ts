@@ -10,21 +10,22 @@ import type {
 export const useTaiwanMap = <P extends Properties = Properties>(
   topology: Topology<Record<string, GeometryCollection<P>>> | null,
   objectName: string,
+  width: number,
+  height: number,
 ) => {
   return useMemo(() => {
-    if (!topology) return { features: [], pathGenerator: null };
+    if (!topology || width === 0 || height === 0)
+      return { features: [], pathGenerator: null };
 
     const geojson = topojson.feature(topology, topology.objects[objectName]);
     const features = (geojson as GeoJSON.FeatureCollection).features;
 
     const projection = d3
       .geoMercator()
-      .center([121, 24])
-      .scale(8000)
-      .translate([400, 300]);
+      .fitSize([width, height], geojson as GeoJSON.FeatureCollection);
 
     const pathGenerator = d3.geoPath().projection(projection);
 
     return { features, pathGenerator };
-  }, [topology, objectName]);
+  }, [topology, objectName, width, height]);
 };

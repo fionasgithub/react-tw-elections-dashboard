@@ -11,9 +11,10 @@ const DashboardLayout = ({
   title = "即時開票地圖",
   isRealTime = true,
 }: DashboardLayoutProps) => (
-  <div className="min-h-screen bg-background px-4 py-6 md:px-8 md:py-8">
-    <div className="mx-auto max-w-[1440px]">
-      <header className="flex items-center gap-4 mb-6">
+  <div className="h-screen overflow-hidden flex flex-col bg-background px-4 py-6 md:px-8 md:py-8">
+    <div className="mx-auto max-w-[1440px] w-full flex-1 flex flex-col min-h-0">
+      {/* Header Section */}
+      <header className="flex items-center gap-4 mb-6 shrink-0">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15">
           <MapPin className="text-primary" />
         </div>
@@ -26,7 +27,8 @@ const DashboardLayout = ({
         )}
       </header>
 
-      <main className="grid grid-cols-12 gap-4">{children}</main>
+      {/* Main Content */}
+      <main className="flex-1 grid grid-cols-12 gap-4 min-h-0">{children}</main>
     </div>
   </div>
 );
