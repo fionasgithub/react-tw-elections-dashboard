@@ -1,16 +1,16 @@
 import clsx from "clsx";
 
-interface DashboardLayoutProps {
+interface MainLayoutProps {
   children: React.ReactNode;
   className?: string;
   containerClassName?: string;
 }
 
-const DashboardLayout = ({
+const MainLayout = ({
   children,
   className,
   containerClassName,
-}: DashboardLayoutProps) => (
+}: MainLayoutProps) => (
   <div
     className={clsx(
       "h-screen bg-background px-4 py-6 md:px-8 md:py-8",
@@ -23,4 +23,4 @@ const DashboardLayout = ({
   </div>
 );
 
-export default DashboardLayout;
+export default MainLayout;

@@ -1,5 +1,5 @@
 import { MapPin } from "lucide-react";
-import DashboardLayout from "@/components/layout/DashboardLayout";
+import MainLayout from "@/components/layout/MainLayout";
 import TaiwanMainMap from "@/components/Map/TaiwanMainMap";
 import { getCountyResults } from "@/data/electionResults";
 import countiesTopologyRaw from "@/data/taiwan-counties.json";
@@ -12,7 +12,7 @@ function DashboardPage() {
   const isRealTime = true; // Placeholder for real-time status
 
   return (
-    <DashboardLayout
+    <MainLayout
       className="overflow-hidden flex flex-col"
       containerClassName="w-full flex-1 flex flex-col min-h-0"
     >
@@ -36,7 +36,7 @@ function DashboardPage() {
       <main className="flex-1 grid grid-cols-12 gap-4 min-h-0">
         <TaiwanMainMap topology={countiesTopology} results={results} />
       </main>
-    </DashboardLayout>
+    </MainLayout>
   );
 }
 
