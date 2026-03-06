@@ -19,7 +19,7 @@ const PartyMayorBreakdown = ({
         </h3>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 max-h-[300px]">
         {stats.map(([party, seats]) => {
           const percentage = ((seats / totalCounties) * 100).toFixed(0);
 
