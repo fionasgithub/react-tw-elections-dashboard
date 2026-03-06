@@ -1,12 +1,15 @@
 import { Vote, Users, BarChart3 } from "lucide-react";
 import QuickStats from "@/components/DashboardPage/ElectionStats/QuickStats";
-import { type CountyResult } from "@/types/elections";
+import PartyMayorBreakdown from "@/components/DashboardPage/ElectionStats/PartyMayorBreakdown";
+import { type CountyResult, type Party } from "@/types/elections";
+import { getWinnerParty } from "@/data/electionResults";
 
 interface ElectionStatsProps {
   results: CountyResult[];
 }
 
 const ElectionStats = ({ results }: ElectionStatsProps) => {
+  // Calculate stats
   const totalCounties = results.length;
   const countedCounties = results.filter((r) => r.votingProgress > 0).length;
   const avgProgress =
@@ -38,9 +41,26 @@ const ElectionStats = ({ results }: ElectionStatsProps) => {
     },
   ];
 
+  // Party mayor breakdown
+  const partyMayorCount = new Map<Party, number>();
+  results.forEach((r) => {
+    const winner = getWinnerParty(r.candidates) as Party | undefined;
+    if (winner) {
+      partyMayorCount.set(winner, (partyMayorCount.get(winner) ?? 0) + 1);
+    }
+  });
+
+  const sortedParties = [...partyMayorCount.entries()].sort(
+    (a, b) => b[1] - a[1],
+  );
+
   return (
     <div className="col-span-12 lg:col-span-4 flex flex-col gap-4">
       <QuickStats stats={stats} />
+      <PartyMayorBreakdown
+        stats={sortedParties}
+        totalCounties={totalCounties}
+      />
     </div>
   );
 };
