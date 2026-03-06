@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTaiwanMap } from "@/hooks/useTaiwanMap";
 import {
   PARTY_COLORS,
@@ -15,6 +16,8 @@ interface TaiwanMainMapProps {
 }
 
 const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
+  const navigate = useNavigate();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [activeParties] = useState();
@@ -106,6 +109,9 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
                     handleMouseMove(e, countyName, candidates);
                   }}
                   onMouseLeave={handleMouseLeave}
+                  onClick={() => {
+                    navigate(`/county/${countyId}`);
+                  }}
                 />
               );
             })}
