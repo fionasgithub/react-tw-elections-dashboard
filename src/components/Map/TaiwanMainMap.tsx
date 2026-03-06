@@ -1,8 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useTaiwanMap } from "@/hooks/useTaiwanMap";
-import { PARTY_COLORS, type CountyResult } from "@/types/elections";
+import {
+  PARTY_COLORS,
+  type CountyResult,
+  type Candidate,
+} from "@/types/elections";
 import type { CountiesTopology, CountyProperties } from "@/types/map";
 import MapLegend from "@/components/Map/MapLegend";
+import MapTooltip from "@/components/Map/MapTooltip";
 
 interface TaiwanMainMapProps {
   topology: CountiesTopology | null;
@@ -33,7 +38,35 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
     dimensions.height,
   );
 
-  const [, setSelectedCounty] = useState<string>("");
+  // Tooltip state
+  const [tooltip, setTooltip] = useState<{
+    x: number;
+    y: number;
+    countyName: string;
+    top3Candidates: Candidate[];
+  } | null>(null);
+
+  const handleMouseMove = useCallback(
+    (
+      e: React.MouseEvent<SVGPathElement, MouseEvent>,
+      name: string,
+      candidates: Candidate[],
+    ) => {
+      setTooltip({
+        x: e.clientX,
+        y: e.clientY,
+        countyName: name,
+        top3Candidates: candidates
+          .sort((a, b) => b.votes - a.votes)
+          .slice(0, 3),
+      });
+    },
+    [],
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    setTooltip(null);
+  }, []);
 
   return (
     <div className="bento-cell col-span-12 lg:col-span-8 flex flex-col gap-3 min-h-0">
@@ -49,12 +82,18 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
             {features.map((f) => {
               const props = f.properties as CountyProperties;
               const countyId = props.COUNTYCODE;
+              const countyName = props.COUNTYNAME;
+
               const countyResult = results?.find(
                 (r) => r.countyId === countyId,
               );
+
+              const candidates = countyResult?.candidates ?? [];
+
               const winner = countyResult?.candidates.find(
                 (c) => c.elected,
               )?.party;
+
               const fillColor = winner ? PARTY_COLORS[winner] : "#D3D3D3";
 
               return (
@@ -62,8 +101,11 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
                   key={countyId ?? f.id}
                   d={pathGenerator(f) ?? undefined}
                   fill={fillColor}
-                  className="stroke-white stroke-1 hover:brightness-90 transition-all cursor-pointer"
-                  onClick={() => setSelectedCounty(props.COUNTYCODE)}
+                  className="map-path"
+                  onMouseMove={(e) => {
+                    handleMouseMove(e, countyName, candidates);
+                  }}
+                  onMouseLeave={handleMouseLeave}
                 />
               );
             })}
@@ -75,6 +117,15 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
       <div className="pt-3 border-t border-border">
         <MapLegend activeParties={activeParties} />
       </div>
+
+      {/* Tooltip */}
+      <MapTooltip
+        x={tooltip?.x ?? 0}
+        y={tooltip?.y ?? 0}
+        countyName={tooltip?.countyName ?? ""}
+        top3Candidates={tooltip?.top3Candidates ?? []}
+        visible={!!tooltip}
+      ></MapTooltip>
     </div>
   );
 };
