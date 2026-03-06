@@ -79,7 +79,7 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
       </div>
 
       {/* SVG map */}
-      <div ref={containerRef} className="flex-1 min-h-0">
+      <div ref={containerRef} className="flex-1 min-h-[360px]">
         {pathGenerator && dimensions.width > 0 && (
           <svg width={dimensions.width} height={dimensions.height}>
             {features.map((f) => {
