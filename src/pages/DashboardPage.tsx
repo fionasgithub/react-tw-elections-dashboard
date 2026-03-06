@@ -1,6 +1,7 @@
 import { MapPin } from "lucide-react";
 import MainLayout from "@/components/layout/MainLayout";
 import TaiwanMainMap from "@/components/Map/TaiwanMainMap";
+import ElectionStats from "@/components/DashboardPage/ElectionStats";
 import { getCountyResults } from "@/data/electionResults";
 import countiesTopologyRaw from "@/data/taiwan-counties.json";
 import type { CountiesTopology } from "@/types/map";
@@ -19,7 +20,7 @@ function DashboardPage() {
       {/* Header Section */}
       <header className="flex items-center gap-4 mb-6 shrink-0">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15">
-          <MapPin className="text-primary" />
+          <MapPin className="h-5 w-5 text-primary" />
         </div>
         <h1 className="text-2xl font-bold text-foreground">
           2026 九合一選舉即時開票
@@ -35,6 +36,7 @@ function DashboardPage() {
       {/* Main Content */}
       <main className="flex-1 grid grid-cols-12 gap-4 min-h-0">
         <TaiwanMainMap topology={countiesTopology} results={results} />
+        <ElectionStats results={results} />
       </main>
     </MainLayout>
   );

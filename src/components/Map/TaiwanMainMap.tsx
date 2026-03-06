@@ -12,7 +12,7 @@ import MapTooltip from "@/components/Map/MapTooltip";
 
 interface TaiwanMainMapProps {
   topology: CountiesTopology | null;
-  results?: CountyResult[];
+  results: CountyResult[];
 }
 
 const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
