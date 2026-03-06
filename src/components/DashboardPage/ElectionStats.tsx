@@ -1,6 +1,7 @@
 import { Vote, Users, BarChart3 } from "lucide-react";
 import QuickStats from "@/components/DashboardPage/ElectionStats/QuickStats";
 import PartyMayorBreakdown from "@/components/DashboardPage/ElectionStats/PartyMayorBreakdown";
+import CountyWinnersList from "@/components/DashboardPage/ElectionStats/CountyWinnersList";
 import { type CountyResult, type Party } from "@/types/elections";
 import { getWinnerParty } from "@/data/electionResults";
 
@@ -54,13 +55,30 @@ const ElectionStats = ({ results }: ElectionStatsProps) => {
     (a, b) => b[1] - a[1],
   );
 
+  // Latest county winners
+  const latestCountyWinners = results
+    .filter((r) => r.votingProgress >= 95)
+    .map((r) => {
+      const winner = r.candidates.reduce((a, b) =>
+        a.voteRate > b.voteRate ? a : b,
+      );
+      return {
+        countyId: r.countyId,
+        countyName: r.countyName,
+        winner: winner.name,
+        party: winner.party,
+        voteRate: winner.voteRate,
+      };
+    });
+
   return (
-    <div className="col-span-12 lg:col-span-4 flex flex-col gap-4">
+    <div className="col-span-12 lg:col-span-4 flex flex-col gap-4 lg:overflow-y-auto lg:min-h-0 lg:pr-3">
       <QuickStats stats={stats} />
       <PartyMayorBreakdown
         stats={sortedParties}
         totalCounties={totalCounties}
       />
+      <CountyWinnersList stats={latestCountyWinners} />
     </div>
   );
 };
