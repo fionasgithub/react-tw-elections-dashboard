@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { PARTY_COLORS, type Party } from "@/types/elections";
 
 interface CountyWinnersListProps {
@@ -9,6 +10,8 @@ interface CountyWinnersListProps {
 }
 
 const CountyWinnersList = ({ stats }: { stats: CountyWinnersListProps[] }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="bento-cell">
       <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
@@ -19,7 +22,10 @@ const CountyWinnersList = ({ stats }: { stats: CountyWinnersListProps[] }) => {
           return (
             <div
               key={stat.countyId}
-              className="flex items-center gap-2 rounded-md bg-secondary/30 px-3 py-2 text-sm"
+              className="flex items-center gap-2 rounded-md bg-secondary/30 px-3 py-2 text-sm cursor-pointer hover:bg-secondary/50 transition-colors"
+              onClick={() => {
+                navigate(`/county/${stat.countyId}`);
+              }}
             >
               <span
                 className="party-dot"
