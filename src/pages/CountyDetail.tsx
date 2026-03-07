@@ -1,5 +1,7 @@
-import MainLayout from "@/components/layout/MainLayout";
+import { useParams } from "react-router-dom";
+import MainLayout from "@/components/Layout/MainLayout";
 import CountyNotFound from "@/components/CountyDetail/CountyNotFound";
+import BreadcrumbNav from "@/components/Navigation/BreadcrumbNav";
 import { getCountyResultById } from "@/data/electionResults";
 
 function CountyDetail() {
@@ -12,7 +14,13 @@ function CountyDetail() {
 
   return (
     <MainLayout>
-      <div>County</div>
+      {/* Breadcrumb */}
+      <BreadcrumbNav
+        items={[
+          { label: "2026 縣市長選舉", to: "/" },
+          { label: result.countyName },
+        ]}
+      ></BreadcrumbNav>
     </MainLayout>
   );
 }
