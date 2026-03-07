@@ -14,7 +14,7 @@ function DashboardPage() {
 
   return (
     <MainLayout
-      className="flex flex-col"
+      className="flex flex-col lg:h-screen lg:overflow-hidden"
       containerClassName="w-full flex-1 flex flex-col min-h-0"
     >
       {/* Header Section */}

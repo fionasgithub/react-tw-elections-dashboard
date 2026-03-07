@@ -13,7 +13,7 @@ const MainLayout = ({
 }: MainLayoutProps) => (
   <div
     className={clsx(
-      "min-h-screen lg:h-screen lg:overflow-hidden bg-background px-4 py-6 md:px-8 md:py-8",
+      "min-h-screen bg-background px-4 py-6 md:px-8 md:py-8",
       className,
     )}
   >
