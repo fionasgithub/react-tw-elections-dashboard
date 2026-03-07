@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import MainLayout from "@/components/layout/MainLayout";
+import MainLayout from "@/components/Layout/MainLayout";
 
 const CountyNotFound = () => {
   return (

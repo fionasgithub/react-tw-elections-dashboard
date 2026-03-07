@@ -1,5 +1,5 @@
 import { MapPin } from "lucide-react";
-import MainLayout from "@/components/layout/MainLayout";
+import MainLayout from "@/components/Layout/MainLayout";
 import TaiwanMainMap from "@/components/Map/TaiwanMainMap";
 import ElectionStats from "@/components/DashboardPage/ElectionStats";
 import { getCountyResults } from "@/data/electionResults";
