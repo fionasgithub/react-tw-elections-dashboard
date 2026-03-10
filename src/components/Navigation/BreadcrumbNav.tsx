@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -25,21 +26,21 @@ function BreadcrumbNav({ items, className }: Props) {
         {items.map((item, index, array) => {
           if (index === array.length - 1) {
             return (
-              <BreadcrumbItem>
+              <BreadcrumbItem key={index}>
                 <BreadcrumbPage>{item.label}</BreadcrumbPage>
               </BreadcrumbItem>
             );
           }
 
           return (
-            <>
-              <BreadcrumbItem key={index}>
+            <React.Fragment key={index}>
+              <BreadcrumbItem>
                 <BreadcrumbLink href={item.to} aria-label={item.ariaLabel}>
                   {item.label}
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-            </>
+            </React.Fragment>
           );
         })}
       </BreadcrumbList>
