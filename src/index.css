@@ -6,6 +6,44 @@
 
 :root {
   --radius: 0.625rem;
+  --background: oklch(0.97 0.005 260);
+  --foreground: oklch(0.13 0.015 260);
+  --card: oklch(0.99 0.01 260);
+  --card-foreground: oklch(0.13 0.015 260);
+  --popover: oklch(0.99 0.01 260);
+  --popover-foreground: oklch(0.13 0.015 260);
+  --primary: oklch(0.46 0.19 250);
+  --primary-foreground: oklch(0.02 0 0);
+  --secondary: oklch(0.55 0.02 260);
+  --secondary-foreground: oklch(0.05 0.01 260);
+  --muted: oklch(0.9 0.01 260);
+  --muted-foreground: oklch(0.45 0.01 260);
+  --accent: oklch(0.6 0.02 260);
+  --accent-foreground: oklch(0.02 0.005 260);
+  --destructive: oklch(0.57 0.245 27.325);
+  --border: oklch(0.86 0.015 260);
+  --input: oklch(0.98 0.015 260);
+  --ring: oklch(0.46 0.19 250);
+  --chart-1: oklch(0.65 0.19 250);
+  --chart-2: oklch(0.7 0.18 155);
+  --chart-3: oklch(0.75 0.15 190);
+  --chart-4: oklch(0.8 0.16 85);
+  --chart-5: oklch(0.65 0.2 25);
+  --sidebar: oklch(0.98 0.01 260);
+  --sidebar-foreground: oklch(0.13 0.015 260);
+  --sidebar-primary: oklch(0.46 0.19 250);
+  --sidebar-primary-foreground: oklch(0.02 0 0);
+  --sidebar-accent: oklch(0.55 0.015 260);
+  --sidebar-accent-foreground: oklch(0.02 0.005 260);
+  --sidebar-border: oklch(0.86 0.015 260);
+  --sidebar-ring: oklch(0.46 0.19 250);
+  --map-path: oklch(0.86 0.015 260);
+  --map-path-hover: oklch(0.98 0.01 260);
+  --bento-cell: oklch(0.4 0.06 260);
+}
+
+.dark {
+  --radius: 0.625rem;
   --background: oklch(0.13 0.015 260);
   --foreground: oklch(0.97 0.005 260);
   --card: oklch(0.17 0.015 260);
@@ -37,6 +75,9 @@
   --sidebar-accent-foreground: oklch(0.95 0.005 260);
   --sidebar-border: oklch(0.28 0.015 260);
   --sidebar-ring: oklch(0.65 0.19 250);
+  --map-path: oklch(0.86 0.015 260);
+  --map-path-hover: oklch(0.98 0.01 260);
+  --bento-cell: oklch(0.4 0.06 260);
 }
 
 @theme inline {
@@ -89,6 +130,10 @@
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /* ── Bento Cell ── */
@@ -100,7 +145,7 @@
 }
 .bento-cell:hover {
   box-shadow: 0 4px 24px oklch(0.65 0.19 250 / 0.08);
-  border-color: oklch(0.4 0.06 260);
+  border-color: var(--bento-cell);
 }
 
 /* ── Party Badge Dot ── */
@@ -114,8 +159,7 @@
 
 /* ── Progress Bar ── */
 .progress-track {
-  @apply h-2 w-full rounded-full;
-  background: oklch(0.22 0.015 260);
+  @apply h-2 w-full rounded-full bg-muted;
 }
 .progress-fill {
   @apply h-full rounded-full;
@@ -125,7 +169,7 @@
 
 /* ── Map styles ── */
 .map-path {
-  stroke: oklch(0.28 0.015 260);
+  stroke: var(--map-path);
   stroke-width: 0.8;
   transition:
     filter 0.15s ease,
@@ -135,7 +179,7 @@
 .map-path:hover {
   filter: brightness(1.25);
   stroke-width: 1.6;
-  stroke: oklch(0.85 0.01 260);
+  stroke: var(--map-path-hover);
 }
 
 /* ── Tooltip ── */
@@ -184,9 +228,9 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: oklch(0.3 0.015 260);
+  background: var(--color-border);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.4 0.02 260);
+  background: var(--color-muted-foreground);
 }

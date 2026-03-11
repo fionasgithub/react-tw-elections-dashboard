@@ -17,7 +17,7 @@ const QuickStats = ({ stats }: QuickStatsProps) => {
       <div className="space-y-4">
         {stats.map((stat) => (
           <div key={stat.label} className="flex items-center gap-3">
-            <div className={`rounded-lg bg-secondary p-2 ${stat.color}`}>
+            <div className={`rounded-lg bg-muted/50 p-2 ${stat.color}`}>
               <stat.icon className="h-4 w-4" />
             </div>
             <div className="flex-1">

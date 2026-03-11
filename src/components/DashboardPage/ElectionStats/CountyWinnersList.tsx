@@ -22,7 +22,7 @@ const CountyWinnersList = ({ stats }: { stats: CountyWinnersListProps[] }) => {
           return (
             <div
               key={stat.countyId}
-              className="flex items-center gap-2 rounded-md bg-secondary/30 px-3 py-2 text-sm cursor-pointer hover:bg-secondary/50 transition-colors"
+              className="flex items-center gap-2 rounded-md bg-muted/50 px-3 py-2 text-sm cursor-pointer hover:bg-muted transition-colors"
               onClick={() => {
                 navigate(`/county/${stat.countyId}`);
               }}

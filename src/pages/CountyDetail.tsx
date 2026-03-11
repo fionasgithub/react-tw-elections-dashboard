@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Info } from "lucide-react";
 import MainLayout from "@/components/Layout/MainLayout";
+import HeaderActions from "@/components/Common/HeaderActions";
 import CountyNotFound from "@/components/CountyDetail/CountyNotFound";
 import CandidateTable from "@/components/CountyDetail/CandidateTable";
 import TownshipMap from "@/components/Map/TownshipMap";
@@ -21,13 +22,17 @@ function CountyDetail() {
 
   return (
     <MainLayout containerClassName="flex flex-col gap-4">
-      {/* Breadcrumb */}
-      <BreadcrumbNav
-        items={[
-          { label: "2022 縣市長選舉", to: "/" },
-          { label: result.countyName },
-        ]}
-      ></BreadcrumbNav>
+      {/* Header */}
+      <div className="flex flex-between items-center gap-2">
+        <BreadcrumbNav
+          items={[
+            { label: "2022 縣市長選舉", to: "/" },
+            { label: result.countyName },
+          ]}
+        ></BreadcrumbNav>
+
+        <HeaderActions />
+      </div>
 
       {/* Back link */}
       <Link

@@ -41,11 +41,11 @@ const CandidateTable = ({ data }: CandidateTableProps) => {
       header: "候選人",
       cell: ({ row }) => (
         <div className="flex items-center gap-1 sm:gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
             <User className="h-4 w-4 text-muted-foreground" />
           </div>
           <span
-            className="inline-flex items-center justify-center w-5 h-5 px-1 py-1 text-xs font-semibold rounded-full text-foreground/80"
+            className="inline-flex items-center justify-center w-5 h-5 px-1 py-1 text-xs font-semibold rounded-full text-[white]/80"
             style={{ backgroundColor: PARTY_COLORS[row.original.party] }}
           >
             {PARTY_SHORT_NAMES[row.original.party as Exclude<Party, "EMPTY">] ||
@@ -148,7 +148,7 @@ const CandidateTable = ({ data }: CandidateTableProps) => {
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className={`border-b border-border/40 transition-colors ${
-                  isLeading ? "bg-primary/8" : "hover:bg-secondary/35"
+                  isLeading ? "bg-primary/8" : "hover:bg-muted/35"
                 }`}
               >
                 {row.getVisibleCells().map((cell) => {
