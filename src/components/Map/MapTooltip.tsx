@@ -4,7 +4,7 @@ interface MapTooltipProps {
   x: number;
   y: number;
   countyName: string;
-  top3Candidates: Candidate[];
+  candidates: Candidate[];
   visible: boolean;
 }
 
@@ -12,7 +12,7 @@ const MapTooltip = ({
   x,
   y,
   countyName,
-  top3Candidates,
+  candidates,
   visible,
 }: MapTooltipProps) => {
   if (!visible) return null;
@@ -27,9 +27,9 @@ const MapTooltip = ({
     >
       <div className="mb-1 font-semibold text-foreground">{countyName}</div>
 
-      {top3Candidates.length > 0 && (
+      {candidates.length > 0 && (
         <div className="space-y-0.5">
-          {top3Candidates.map((candidate, i) => (
+          {candidates.map((candidate, i) => (
             <div key={i} className="flex items-center gap-2 text-xs">
               <span
                 className="party-dot"

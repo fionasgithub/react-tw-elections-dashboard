@@ -1,10 +1,12 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useTaiwanMap } from "@/hooks/useTaiwanMap";
-import { PARTY_COLORS, type Candidate, type Party } from "@/types/elections";
+import { PARTY_COLORS, type Party } from "@/types/elections";
 import type { TownsTopology, TownProperties } from "@/types/map";
 import MapLegend from "@/components/Map/MapLegend";
 import MapTooltip from "@/components/Map/MapTooltip";
 import { getWinnerParty, getTownshipsByCounty } from "@/data/electionResults";
+import { useContainerDimensions } from "@/hooks/useContainerDimensions";
+import { useMapTooltip } from "@/hooks/useMapTooltip";
 
 interface TownshipMapProps {
   topology: TownsTopology | null;
@@ -15,21 +17,9 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
   const townResults = getTownshipsByCounty(countyId);
   const resultMap = new Map(townResults.map((t) => [t.townshipName, t]));
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const { ref: containerRef, dimensions } =
+    useContainerDimensions<HTMLDivElement>();
   const [activeParties] = useState();
-
-  // Dynamically update dimensions on container resize
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const observer = new ResizeObserver(([entry]) => {
-      const { width, height } = entry.contentRect;
-      setDimensions({ width: Math.floor(width), height: Math.floor(height) });
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   const { features, pathGenerator } = useTaiwanMap<TownProperties>(
     topology,
@@ -39,35 +29,7 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
     dimensions.height,
   );
 
-  // Tooltip state
-  const [tooltip, setTooltip] = useState<{
-    x: number;
-    y: number;
-    countyName: string;
-    top3Candidates: Candidate[];
-  } | null>(null);
-
-  const handleMouseMove = useCallback(
-    (
-      e: React.MouseEvent<SVGPathElement, MouseEvent>,
-      name: string,
-      candidates: Candidate[],
-    ) => {
-      setTooltip({
-        x: e.clientX,
-        y: e.clientY,
-        countyName: name,
-        top3Candidates: candidates
-          .sort((a, b) => b.votes - a.votes)
-          .slice(0, 3),
-      });
-    },
-    [],
-  );
-
-  const handleMouseLeave = useCallback(() => {
-    setTooltip(null);
-  }, []);
+  const { tooltip, handleMouseMove, handleMouseLeave } = useMapTooltip();
 
   return (
     <div className="bento-cell text-lg font-semibold text-foreground">
@@ -119,9 +81,9 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
         x={tooltip?.x ?? 0}
         y={tooltip?.y ?? 0}
         countyName={tooltip?.countyName ?? ""}
-        top3Candidates={tooltip?.top3Candidates ?? []}
+        candidates={tooltip?.candidates ?? []}
         visible={!!tooltip}
-      ></MapTooltip>
+      />
     </div>
   );
 };
