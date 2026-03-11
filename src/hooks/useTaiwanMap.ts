@@ -6,10 +6,12 @@ import type {
   GeometryCollection,
   Properties,
 } from "topojson-specification";
+import type { TownProperties } from "@/types/map";
 
 export const useTaiwanMap = <P extends Properties = Properties>(
   topology: Topology<Record<string, GeometryCollection<P>>> | null,
   objectName: string,
+  countyId: string | null = null,
   width: number,
   height: number,
 ) => {
@@ -19,13 +21,34 @@ export const useTaiwanMap = <P extends Properties = Properties>(
 
     const geojson = topojson.feature(topology, topology.objects[objectName]);
     const features = (geojson as GeoJSON.FeatureCollection).features;
+    const countyFeatures = features.filter((f) => {
+      if (!countyId) return true;
+      return (f.properties as TownProperties).COUNTYCODE === countyId;
+    });
 
     const projection = d3
       .geoMercator()
       .fitSize([width, height], geojson as GeoJSON.FeatureCollection);
 
-    const pathGenerator = d3.geoPath().projection(projection);
+    if (countyId) {
+      const collection: GeoJSON.FeatureCollection = {
+        type: "FeatureCollection",
+        features: countyFeatures,
+      };
 
-    return { features, pathGenerator };
-  }, [topology, objectName, width, height]);
+      projection.fitExtent(
+        [
+          [30, 30],
+          [570, 570],
+        ],
+        collection,
+      );
+    }
+
+    const pathGenerator = d3.geoPath().projection(projection);
+    return {
+      features: countyFeatures,
+      pathGenerator,
+    };
+  }, [topology, objectName, countyId, width, height]);
 };

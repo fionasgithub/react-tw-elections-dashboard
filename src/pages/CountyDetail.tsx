@@ -3,8 +3,13 @@ import { ArrowLeft, Info } from "lucide-react";
 import MainLayout from "@/components/Layout/MainLayout";
 import CountyNotFound from "@/components/CountyDetail/CountyNotFound";
 import CandidateTable from "@/components/CountyDetail/CandidateTable";
+import TownshipMap from "@/components/Map/TownshipMap";
 import BreadcrumbNav from "@/components/Navigation/BreadcrumbNav";
 import { getCountyResultById } from "@/data/electionResults";
+import townsTopologyRaw from "@/data/taiwan-towns.json";
+import type { TownsTopology } from "@/types/map";
+
+const townsTopology = townsTopologyRaw as unknown as TownsTopology;
 
 function CountyDetail() {
   const { countyId } = useParams<{ countyId: string }>();
@@ -72,6 +77,13 @@ function CountyDetail() {
               資料來源：中央選舉委員會。本頁數據僅供參考，最終結果以中選會公告為準。
             </p>
           </div>
+        </div>
+
+        {/* Right: Township Map */}
+        <div className="lg:col-span-7">
+          {countyId && (
+            <TownshipMap topology={townsTopology} countyId={countyId} />
+          )}
         </div>
       </div>
     </MainLayout>

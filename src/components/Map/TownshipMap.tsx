@@ -1,22 +1,19 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { useTaiwanMap } from "@/hooks/useTaiwanMap";
-import {
-  PARTY_COLORS,
-  type CountyResult,
-  type Candidate,
-} from "@/types/elections";
-import type { CountiesTopology, CountyProperties } from "@/types/map";
+import { PARTY_COLORS, type Candidate, type Party } from "@/types/elections";
+import type { TownsTopology, TownProperties } from "@/types/map";
 import MapLegend from "@/components/Map/MapLegend";
 import MapTooltip from "@/components/Map/MapTooltip";
+import { getWinnerParty, getTownshipsByCounty } from "@/data/electionResults";
 
-interface TaiwanMainMapProps {
-  topology: CountiesTopology | null;
-  results: CountyResult[];
+interface TownshipMapProps {
+  topology: TownsTopology | null;
+  countyId: string;
 }
 
-const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
-  const navigate = useNavigate();
+const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
+  const townResults = getTownshipsByCounty(countyId);
+  const resultMap = new Map(townResults.map((t) => [t.townshipName, t]));
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -34,10 +31,10 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
     return () => observer.disconnect();
   }, []);
 
-  const { features, pathGenerator } = useTaiwanMap<CountyProperties>(
+  const { features, pathGenerator } = useTaiwanMap<TownProperties>(
     topology,
-    "COUNTY_MOI_1140318",
-    null,
+    "TOWN_MOI_1140318",
+    countyId,
     dimensions.width,
     dimensions.height,
   );
@@ -73,46 +70,38 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
   }, []);
 
   return (
-    <div className="bento-cell col-span-12 lg:col-span-8 flex flex-col gap-3 min-h-0">
-      <div className="flex justify-between items-center shrink-0">
-        <h2 className="text-lg font-semibold">全台縣市地圖</h2>
-        <span className="text-xs text-muted-foreground">點擊縣市查看詳情</span>
-      </div>
+    <div className="bento-cell text-lg font-semibold text-foreground">
+      <h2 className="text-lg font-semibold">鄉鎮市區地圖</h2>
 
       {/* SVG map */}
       <div ref={containerRef} className="flex-1 min-h-[360px]">
         {pathGenerator && dimensions.width > 0 && (
-          <svg width={dimensions.width} height={dimensions.height}>
+          <svg
+            viewBox="0 0 600 600"
+            width={dimensions.width}
+            height={dimensions.height}
+          >
             {features.map((f) => {
-              const props = f.properties as CountyProperties;
-              const countyId = props.COUNTYCODE;
-              const countyName = props.COUNTYNAME;
-
-              const countyResult = results?.find(
-                (r) => r.countyId === countyId,
-              );
-
-              const candidates = countyResult?.candidates ?? [];
-
-              const winner = countyResult?.candidates.find(
-                (c) => c.elected,
-              )?.party;
-
-              const fillColor = winner ? PARTY_COLORS[winner] : "#D3D3D3";
+              const props = f.properties as TownProperties;
+              const townId = props.TOWNCODE;
+              const townName = props.TOWNNAME;
+              const result = resultMap.get(townName);
+              const candidates = result?.candidates ?? [];
+              const winner = getWinnerParty(candidates);
+              const fillColor = winner
+                ? PARTY_COLORS[winner as Party]
+                : "#D3D3D3";
 
               return (
                 <path
-                  key={countyId ?? f.id}
+                  key={townId ?? f.id}
                   d={pathGenerator(f) ?? undefined}
                   fill={fillColor}
                   className="map-path"
                   onMouseMove={(e) => {
-                    handleMouseMove(e, countyName, candidates);
+                    handleMouseMove(e, townName, candidates);
                   }}
                   onMouseLeave={handleMouseLeave}
-                  onClick={() => {
-                    navigate(`/county/${countyId}`);
-                  }}
                 />
               );
             })}
@@ -137,4 +126,4 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
   );
 };
 
-export default TaiwanMainMap;
+export default TownshipMap;
