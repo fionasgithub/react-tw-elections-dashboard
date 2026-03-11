@@ -23,6 +23,17 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
     null,
   );
 
+  // To ensure hovered county is on top, render the stroke properly.
+  const [hoveredCountyId, setHoveredCountyId] = useState<string | null>(null);
+  const sortedFeatures = [
+    ...features.filter(
+      (f) => (f.properties as CountyProperties).COUNTYCODE !== hoveredCountyId,
+    ),
+    ...features.filter(
+      (f) => (f.properties as CountyProperties).COUNTYCODE === hoveredCountyId,
+    ),
+  ];
+
   const { tooltip, handleMouseMove, handleMouseLeave } = useMapTooltip();
 
   return (
@@ -36,7 +47,7 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
       <div className="flex-1 min-h-[360px]">
         {pathGenerator && features.length > 0 ? (
           <svg viewBox="0 0 800 700" className="w-full h-full max-h-[600px]">
-            {features.map((f) => {
+            {sortedFeatures.map((f) => {
               const props = f.properties as CountyProperties;
               const countyId = props.COUNTYCODE;
               const countyName = props.COUNTYNAME;
@@ -59,10 +70,14 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
                   d={pathGenerator(f) ?? undefined}
                   fill={fillColor}
                   className="map-path"
-                  onMouseMove={(e) => {
+                  onMouseEnter={(e) => {
                     handleMouseMove(e, countyName, candidates);
+                    setHoveredCountyId(countyId);
                   }}
-                  onMouseLeave={handleMouseLeave}
+                  onMouseLeave={() => {
+                    handleMouseLeave();
+                    setHoveredCountyId(null);
+                  }}
                   onClick={() => {
                     navigate(`/county/${countyId}`);
                   }}

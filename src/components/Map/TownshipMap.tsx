@@ -24,6 +24,17 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
     countyId,
   );
 
+  // To ensure hovered township is on top, render the stroke properly.
+  const [hoveredTownId, setHoveredTownId] = useState<string | null>(null);
+  const sortedFeatures = [
+    ...features.filter(
+      (f) => (f.properties as TownProperties).TOWNCODE !== hoveredTownId,
+    ),
+    ...features.filter(
+      (f) => (f.properties as TownProperties).TOWNCODE === hoveredTownId,
+    ),
+  ];
+
   const { tooltip, handleMouseMove, handleMouseLeave } = useMapTooltip();
 
   return (
@@ -34,7 +45,7 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
       <div className="flex-1 min-h-[360px]">
         {pathGenerator && features.length > 0 ? (
           <svg viewBox="0 0 600 600" className="w-full h-full max-h-[500px]">
-            {features.map((f) => {
+            {sortedFeatures.map((f) => {
               const props = f.properties as TownProperties;
               const townId = props.TOWNCODE;
               const townName = props.TOWNNAME;
@@ -51,10 +62,14 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
                   d={pathGenerator(f) ?? undefined}
                   fill={fillColor}
                   className="map-path"
-                  onMouseMove={(e) => {
+                  onMouseEnter={(e) => {
                     handleMouseMove(e, townName, candidates);
+                    setHoveredTownId(townId);
                   }}
-                  onMouseLeave={handleMouseLeave}
+                  onMouseLeave={() => {
+                    handleMouseLeave();
+                    setHoveredTownId(null);
+                  }}
                 />
               );
             })}
