@@ -8,12 +8,12 @@ import MapTooltip from "@/components/Map/MapTooltip";
 import { useContainerDimensions } from "@/hooks/useContainerDimensions";
 import { useMapTooltip } from "@/hooks/useMapTooltip";
 
-interface TaiwanMainMapProps {
+interface CountyMapProps {
   topology: CountiesTopology | null;
   results: CountyResult[];
 }
 
-const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
+const CountyMap = ({ topology, results }: CountyMapProps) => {
   const navigate = useNavigate();
 
   const { ref: containerRef, dimensions } =
@@ -95,4 +95,4 @@ const TaiwanMainMap = ({ topology, results }: TaiwanMainMapProps) => {
   );
 };
 
-export default TaiwanMainMap;
+export default CountyMap;

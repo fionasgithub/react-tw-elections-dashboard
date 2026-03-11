@@ -1,6 +1,6 @@
 import { MapPin } from "lucide-react";
 import MainLayout from "@/components/Layout/MainLayout";
-import TaiwanMainMap from "@/components/Map/TaiwanMainMap";
+import CountyMap from "@/components/Map/CountyMap";
 import ElectionStats from "@/components/DashboardPage/ElectionStats";
 import { getCountyResults } from "@/data/electionResults";
 import countiesTopologyRaw from "@/data/taiwan-counties.json";
@@ -35,7 +35,7 @@ function DashboardPage() {
 
       {/* Main Content */}
       <main className="flex-1 grid grid-cols-12 gap-4 min-h-0">
-        <TaiwanMainMap topology={countiesTopology} results={results} />
+        <CountyMap topology={countiesTopology} results={results} />
         <ElectionStats results={results} />
       </main>
     </MainLayout>
