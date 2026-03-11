@@ -5,7 +5,6 @@ import type { TownsTopology, TownProperties } from "@/types/map";
 import MapLegend from "@/components/Map/MapLegend";
 import MapTooltip from "@/components/Map/MapTooltip";
 import { getWinnerParty, getTownshipsByCounty } from "@/data/electionResults";
-import { useContainerDimensions } from "@/hooks/useContainerDimensions";
 import { useMapTooltip } from "@/hooks/useMapTooltip";
 
 interface TownshipMapProps {
@@ -17,16 +16,12 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
   const townResults = getTownshipsByCounty(countyId);
   const resultMap = new Map(townResults.map((t) => [t.townshipName, t]));
 
-  const { ref: containerRef, dimensions } =
-    useContainerDimensions<HTMLDivElement>();
   const [activeParties] = useState();
 
   const { features, pathGenerator } = useTaiwanMap<TownProperties>(
     topology,
     "TOWN_MOI_1140318",
     countyId,
-    dimensions.width,
-    dimensions.height,
   );
 
   const { tooltip, handleMouseMove, handleMouseLeave } = useMapTooltip();
@@ -36,13 +31,9 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
       <h2 className="text-lg font-semibold">鄉鎮市區地圖</h2>
 
       {/* SVG map */}
-      <div ref={containerRef} className="flex-1 min-h-[360px]">
-        {pathGenerator && dimensions.width > 0 && (
-          <svg
-            viewBox="0 0 600 600"
-            width={dimensions.width}
-            height={dimensions.height}
-          >
+      <div className="flex-1 min-h-[360px]">
+        {pathGenerator && features.length > 0 ? (
+          <svg viewBox="0 0 600 600" className="w-full h-full max-h-[500px]">
             {features.map((f) => {
               const props = f.properties as TownProperties;
               const townId = props.TOWNCODE;
@@ -68,6 +59,8 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
               );
             })}
           </svg>
+        ) : (
+          <p className="text-muted-foreground text-sm">載入地圖中…</p>
         )}
       </div>
 

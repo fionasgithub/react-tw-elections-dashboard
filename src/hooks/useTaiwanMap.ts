@@ -12,12 +12,9 @@ export const useTaiwanMap = <P extends Properties = Properties>(
   topology: Topology<Record<string, GeometryCollection<P>>> | null,
   objectName: string,
   countyId: string | null = null,
-  width: number,
-  height: number,
 ) => {
   return useMemo(() => {
-    if (!topology || width === 0 || height === 0)
-      return { features: [], pathGenerator: null };
+    if (!topology) return { features: [], pathGenerator: null };
 
     const geojson = topojson.feature(topology, topology.objects[objectName]);
     const features = (geojson as GeoJSON.FeatureCollection).features;
@@ -28,14 +25,14 @@ export const useTaiwanMap = <P extends Properties = Properties>(
 
     const projection = d3
       .geoMercator()
-      .fitSize([width, height], geojson as GeoJSON.FeatureCollection);
+      .fitSize([600, 600], geojson as GeoJSON.FeatureCollection);
+
+    const collection: GeoJSON.FeatureCollection = {
+      type: "FeatureCollection",
+      features: countyFeatures,
+    };
 
     if (countyId) {
-      const collection: GeoJSON.FeatureCollection = {
-        type: "FeatureCollection",
-        features: countyFeatures,
-      };
-
       projection.fitExtent(
         [
           [30, 30],
@@ -43,6 +40,8 @@ export const useTaiwanMap = <P extends Properties = Properties>(
         ],
         collection,
       );
+    } else {
+      projection.center([121, 24]).scale(10000).translate([400, 300]);
     }
 
     const pathGenerator = d3.geoPath().projection(projection);
@@ -50,5 +49,5 @@ export const useTaiwanMap = <P extends Properties = Properties>(
       features: countyFeatures,
       pathGenerator,
     };
-  }, [topology, objectName, countyId, width, height]);
+  }, [topology, objectName, countyId]);
 };

@@ -5,7 +5,6 @@ import { PARTY_COLORS, type CountyResult } from "@/types/elections";
 import type { CountiesTopology, CountyProperties } from "@/types/map";
 import MapLegend from "@/components/Map/MapLegend";
 import MapTooltip from "@/components/Map/MapTooltip";
-import { useContainerDimensions } from "@/hooks/useContainerDimensions";
 import { useMapTooltip } from "@/hooks/useMapTooltip";
 
 interface CountyMapProps {
@@ -16,16 +15,12 @@ interface CountyMapProps {
 const CountyMap = ({ topology, results }: CountyMapProps) => {
   const navigate = useNavigate();
 
-  const { ref: containerRef, dimensions } =
-    useContainerDimensions<HTMLDivElement>();
   const [activeParties] = useState();
 
   const { features, pathGenerator } = useTaiwanMap<CountyProperties>(
     topology,
     "COUNTY_MOI_1140318",
     null,
-    dimensions.width,
-    dimensions.height,
   );
 
   const { tooltip, handleMouseMove, handleMouseLeave } = useMapTooltip();
@@ -38,9 +33,9 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
       </div>
 
       {/* SVG map */}
-      <div ref={containerRef} className="flex-1 min-h-[360px]">
-        {pathGenerator && dimensions.width > 0 && (
-          <svg width={dimensions.width} height={dimensions.height}>
+      <div className="flex-1 min-h-[360px]">
+        {pathGenerator && features.length > 0 ? (
+          <svg viewBox="0 0 800 700" className="w-full h-full max-h-[600px]">
             {features.map((f) => {
               const props = f.properties as CountyProperties;
               const countyId = props.COUNTYCODE;
@@ -75,6 +70,8 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
               );
             })}
           </svg>
+        ) : (
+          <p className="text-muted-foreground text-sm">載入地圖中…</p>
         )}
       </div>
 
