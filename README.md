@@ -10,12 +10,12 @@
 
 相關連結：
 
-- 需求書: [spec-2026-elections-map.md](docs/spec-2026-elections-map.md)
+- 需求書: [spec-2022-elections-map.md](docs/spec-2022-elections-map.md)
 - 原 Vue 專案: [https://github.com/chunkimi/vote-inquiry](https://github.com/chunkimi/vote-inquiry)（因串接的 Firebase 資料已停用，示範頁面可能無資料）
 
 ### 設計稿
 
-使用 Google Antigravity + UI UX Pro max skills 根據[需求書](docs/spec-2026-elections-map.md)產出的設計稿：
+使用 Google Antigravity + UI UX Pro max skills 根據[需求書](docs/spec-2022-elections-map.md)產出的設計稿：
 
 首頁:
 
@@ -45,6 +45,10 @@
 - npm
 
 ## 資料來源
+
+中央選舉委員會
+
+- [投開票概況資料 - 下載 2022 年直轄市長、縣市長](https://db.cec.gov.tw/ElecTable/Election?type=Mayor)
 
 政府資料開放平台
 

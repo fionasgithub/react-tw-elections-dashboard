@@ -23,7 +23,7 @@ function DashboardPage() {
           <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
         </div>
         <h1 className="text-2xl font-bold text-foreground">
-          2026 縣市長選舉開票地圖
+          2022 縣市長選舉開票地圖
         </h1>
         {isRealTime && (
           <div className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-2 sm:px-2.5 sm:py-1">

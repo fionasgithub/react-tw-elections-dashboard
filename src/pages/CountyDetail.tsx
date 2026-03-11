@@ -24,7 +24,7 @@ function CountyDetail() {
       {/* Breadcrumb */}
       <BreadcrumbNav
         items={[
-          { label: "2026 縣市長選舉", to: "/" },
+          { label: "2022 縣市長選舉", to: "/" },
           { label: result.countyName },
         ]}
       ></BreadcrumbNav>
