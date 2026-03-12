@@ -44,6 +44,10 @@
 - Husky + Commitlint
 - npm
 
+## 資料結構
+
+components/ui -> 專門放 Shadcn 產出的 UI components
+
 ## 資料來源
 
 中央選舉委員會
@@ -59,3 +63,13 @@
 
 - 地圖資料來源缺漏：理想上應該可以顯示到村里的資訊，但因為[村里界圖](https://data.gov.tw/dataset/7438)的經緯度圖資來源有問題無法下載，故折衷只顯示到鄉鎮市區。
 - 設計稿產出：本來打算利用 [pencil.dev](https://www.pencil.dev/) 快速產出設計稿，但在嘗試使用 vscode 整合時，一直無法產出理想的設計稿，後來改用 antigravity + ui ux pro max skills 就完成了。
+
+## TODO
+
+- [ ] 台灣地圖金門縣、連江縣不見的問題
+- [ ] 用戶會覺得 hover 只有顯示 top 3 會很奇怪嗎
+- [x] 要 link 回 github 專案，讓人家知道是非官方網站
+- [x] 2026 改回 2022，使用真實資料
+- [ ] 檢查 mobile 版本
+- [ ] 考慮 SEO 是否要做到用戶輸入「桃園市 開票」就要可以找到？要改用 next 嗎？
+- [ ] 串接 api 要用 tanstack 的 react-query
