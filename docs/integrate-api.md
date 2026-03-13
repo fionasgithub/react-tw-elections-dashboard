@@ -18,6 +18,23 @@ TL;DR - 新增一個簡潔的 HTTP 包裝層與型別化的 react-query hooks，
    - 更新 [src/components/Map/CountyMap.tsx](src/components/Map/CountyMap.tsx) 與 [src/components/Map/TownshipMap.tsx](src/components/Map/TownshipMap.tsx)，以接受 loading / error 狀態與從 props 傳入的資料。
 6. 新增測試或手動驗證步驟，並在開發環境提供 `mock` 切換，以保留現有本地行為。
 
+**API 回傳範例與對應**
+
+上游 API 回傳的 JSON 結構與我們內部的 `CountyResult`/`TownshipResult` 不同。請在 `src/lib/api.ts` 新增正規化步驟（例如 `normalizeCountyApiItem`），將外部欄位映射到我們的型別，並處理政黨名稱對應與候選人數量限制。範例請求：
+
+```bash
+curl --location 'https://api.election.localhost/county-votes-summaries?year=2022&type=mayor&countyCode=63000&candidateLimit=3'
+```
+
+回應映射要點：
+- 將外部的 `countyCode` 映射為 `countyId`，`countyName` 映射為 `countyName`。
+- 轉換候選人欄位：`name`、`party`（將顯示用的政黨名稱對應到我們的 `Party` 聯合型別）、`votes` → `votes`、`voteShare` → `voteRate`（百分比）。
+- 若 API 提供開票進度則填入 `votingProgress`，否則預設為 `0`。
+- 遵守 `candidateLimit`：對候選人陣列做截斷或補足（必要時填入空位或標記）。
+- 穩健處理遺失或非預期欄位，並將轉換錯誤紀錄於日誌或遙測中。
+
+新增單元測試以覆蓋正規化邏輯（邊界案例：票率並列、缺欄位、未知政黨名稱）。
+
 **Relevant files**
 
 - [src/lib/api.ts](src/lib/api.ts) — 建立：共用的 fetch 包裝與 API 函式
