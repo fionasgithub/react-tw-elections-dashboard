@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import MainLayout from "@/components/Layout/MainLayout";
 import DashboardHeader from "@/components/DashboardPage/Header";
 import CountyMap from "@/components/Map/CountyMap";
@@ -5,12 +6,30 @@ import ElectionStats from "@/components/DashboardPage/ElectionStats";
 import { getCountyResults } from "@/data/electionResults";
 import countiesTopologyRaw from "@/data/taiwan-counties.json";
 import type { CountiesTopology } from "@/types/map";
+import { useCountyVotesSummary } from "@/hooks/useCountyVotesSummary";
+import { transformCountyVotesSummary } from "@/utils/electionTransform";
 
 const countiesTopology = countiesTopologyRaw as unknown as CountiesTopology;
-const results = getCountyResults();
+const fallbackResults = getCountyResults();
 
 function DashboardPage() {
-  const isRealTime = true; // Placeholder for real-time status
+  const {
+    data: countyVotesSummary,
+    isError,
+    isSuccess,
+  } = useCountyVotesSummary({
+    year: 2022,
+    type: "mayor",
+  });
+
+  const isRealTime = isSuccess && !isError;
+
+  const results = useMemo(() => {
+    if (countyVotesSummary) {
+      return transformCountyVotesSummary(countyVotesSummary);
+    }
+    return fallbackResults;
+  }, [countyVotesSummary]);
 
   return (
     <MainLayout

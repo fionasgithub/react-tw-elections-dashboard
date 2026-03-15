@@ -6,7 +6,7 @@ export type Party =
   | "PFP" // 親民黨
   | "TSU" // 台灣團結聯盟
   | "GPT" // 綠黨
-  | "IND" // 無黨籍
+  | "IND" // 無
   | "EMPTY"; // 未分配或無資料
 
 export const PARTY_COLORS: Record<Party, string> = {
@@ -29,7 +29,7 @@ export const PARTY_NAMES: Record<Party, string> = {
   PFP: "親民黨",
   TSU: "台灣團結聯盟",
   GPT: "綠黨",
-  IND: "無黨籍",
+  IND: "無",
   EMPTY: "尚未開票/票數相同",
 };
 
@@ -58,6 +58,8 @@ export interface CountyResult {
   countyName: string; // 縣市名稱
   votingProgress: number; // 開票進度 (0-100, %)
   candidates: Candidate[]; // 所有候選人
+  isSpecialElection?: boolean; // 是否為補選（因特殊原因延期）
+  note?: string; // 特殊說明文字
 }
 
 export interface TownshipResult {

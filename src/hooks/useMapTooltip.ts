@@ -6,6 +6,8 @@ export type MapTooltipState = {
   y: number;
   countyName: string;
   candidates: Candidate[];
+  isSpecialElection?: boolean;
+  note?: string;
 } | null;
 
 export function useMapTooltip() {
@@ -16,6 +18,8 @@ export function useMapTooltip() {
       e: React.MouseEvent<SVGPathElement, MouseEvent>,
       name: string,
       candidates: Candidate[],
+      isSpecialElection?: boolean,
+      note?: string,
     ) => {
       setTooltip({
         x: e.clientX,
@@ -25,6 +29,8 @@ export function useMapTooltip() {
           .slice()
           .sort((a, b) => b.votes - a.votes)
           .slice(0, 3),
+        isSpecialElection,
+        note,
       });
     },
     [],

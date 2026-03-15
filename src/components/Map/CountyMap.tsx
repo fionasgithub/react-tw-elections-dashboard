@@ -47,6 +47,26 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
       <div className="flex-1 min-h-[360px]">
         {pathGenerator && features.length > 0 ? (
           <svg viewBox="0 0 800 700" className="w-full h-full max-h-[600px]">
+            <defs>
+              <pattern
+                id="specialElectionPattern"
+                patternUnits="userSpaceOnUse"
+                width="10"
+                height="10"
+                patternTransform="rotate(45 0 0)"
+              >
+                <rect width="10" height="10" fill="#1e2035" />
+                <line
+                  x1="0"
+                  y1="5"
+                  x2="10"
+                  y2="5"
+                  stroke="#C9961C"
+                  strokeWidth="3"
+                  opacity="0.7"
+                />
+              </pattern>
+            </defs>
             {sortedFeatures.map((f) => {
               const props = f.properties as CountyProperties;
               const countyId = props.COUNTYCODE;
@@ -57,12 +77,18 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
               );
 
               const candidates = countyResult?.candidates ?? [];
+              const isSpecialElection = countyResult?.isSpecialElection;
+              const note = countyResult?.note;
 
               const winner = countyResult?.candidates.find(
                 (c) => c.elected,
               )?.party;
 
-              const fillColor = winner ? PARTY_COLORS[winner] : "#D3D3D3";
+              const fillColor = isSpecialElection
+                ? "url(#specialElectionPattern)"
+                : winner
+                  ? PARTY_COLORS[winner]
+                  : "#D3D3D3";
 
               return (
                 <path
@@ -71,7 +97,7 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
                   fill={fillColor}
                   className="map-path"
                   onMouseEnter={(e) => {
-                    handleMouseMove(e, countyName, candidates);
+                    handleMouseMove(e, countyName, candidates, isSpecialElection, note);
                     setHoveredCountyId(countyId);
                   }}
                   onMouseLeave={() => {
@@ -101,6 +127,8 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
         y={tooltip?.y ?? 0}
         countyName={tooltip?.countyName ?? ""}
         candidates={tooltip?.candidates ?? []}
+        isSpecialElection={tooltip?.isSpecialElection}
+        note={tooltip?.note}
         visible={!!tooltip}
       />
     </div>

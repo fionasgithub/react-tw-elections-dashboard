@@ -442,30 +442,10 @@ export const countyResults: CountyResult[] = [
   {
     countyId: "10020",
     countyName: "嘉義市",
-    votingProgress: 99.5,
-    candidates: [
-      {
-        name: "黃敏惠",
-        party: "KMT",
-        votes: 62345,
-        voteRate: 48.7,
-        elected: true,
-      },
-      {
-        name: "李俊俋",
-        party: "DPP",
-        votes: 54321,
-        voteRate: 42.5,
-        elected: false,
-      },
-      {
-        name: "張秀華",
-        party: "TPP",
-        votes: 11234,
-        voteRate: 8.8,
-        elected: false,
-      },
-    ],
+    votingProgress: 0,
+    isSpecialElection: true,
+    note: "嘉義市市長選舉因候選人病逝，選舉日期延至2022年12月18日，本次投票日（2022/11/26）無開票資料。",
+    candidates: [],
   },
   {
     countyId: "10013",
