@@ -9,7 +9,6 @@ const BASE_URL =
 export interface CountyVotesSummaryParams {
   year: number;
   type: "mayor"; // current only support "mayor"
-  countyCode?: string; // optional, show all if not provided
   candidateLimit?: number; // optional, show all if not provided
 }
 
@@ -19,7 +18,6 @@ export async function fetchCountyVotesSummary(
   const searchParams = new URLSearchParams({
     year: params.year.toString(),
     type: params.type,
-    ...(params.countyCode ? { countyCode: params.countyCode } : {}),
     ...(params.candidateLimit
       ? { candidateLimit: params.candidateLimit.toString() }
       : {}),
