@@ -6,7 +6,7 @@ import ElectionStats from "@/components/DashboardPage/ElectionStats";
 import { getCountyResults } from "@/data/electionResults";
 import countiesTopologyRaw from "@/data/taiwan-counties.json";
 import type { CountiesTopology } from "@/types/map";
-import { useCountyVotesSummary } from "@/hooks/useCountyVotesSummary";
+import { useCountyVotesSummary } from "@/hooks/useVotesSummary";
 import { transformCountyVotesSummary } from "@/utils/electionTransform";
 
 const countiesTopology = countiesTopologyRaw as unknown as CountiesTopology;
