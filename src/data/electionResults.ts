@@ -444,7 +444,7 @@ export const countyResults: CountyResult[] = [
     countyName: "嘉義市",
     votingProgress: 0,
     isSpecialElection: true,
-    note: "嘉義市市長選舉因候選人病逝，選舉日期延至2022年12月18日，本次投票日（2022/11/26）無開票資料。",
+    note: "嘉義市市長選舉因特殊情況延期，選舉日期延至2022年12月18日，本次投票日（2022/11/26）無開票資料。",
     candidates: [],
   },
   {
