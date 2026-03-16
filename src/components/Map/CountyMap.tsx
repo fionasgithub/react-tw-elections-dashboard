@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTaiwanMap } from "@/hooks/useTaiwanMap";
-import { PARTY_COLORS, type CountyResult } from "@/types/elections";
+import { PARTY_COLORS, type CountyResult, type Party } from "@/types/elections";
 import type { CountiesTopology, CountyProperties } from "@/types/map";
 import MapLegend from "@/components/Map/MapLegend";
 import MapTooltip from "@/components/Map/MapTooltip";
@@ -16,7 +16,17 @@ interface CountyMapProps {
 const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
   const navigate = useNavigate();
 
-  const [activeParties] = useState();
+  const activeParties = useMemo(() => {
+    const partySet = new Set<Party>();
+    results.reduce((item, rows) => {
+      const winner = rows.candidates.find((c) => c.elected)?.party;
+      if (winner) {
+        item.add(winner);
+      }
+      return item;
+    }, partySet);
+    return Array.from(partySet);
+  }, [results]);
 
   const { features, pathGenerator } = useTaiwanMap<CountyProperties>(
     topology,
@@ -98,7 +108,13 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
                   fill={fillColor}
                   className="map-path"
                   onMouseEnter={(e) => {
-                    handleMouseMove(e, countyName, candidates, isSpecialElection, note);
+                    handleMouseMove(
+                      e,
+                      countyName,
+                      candidates,
+                      isSpecialElection,
+                      note,
+                    );
                     setHoveredCountyId(countyId);
                   }}
                   onMouseLeave={() => {
