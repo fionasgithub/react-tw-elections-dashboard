@@ -2,7 +2,6 @@ import type { CountyResult, TownshipResult } from "@/types/elections";
 
 /**
  * Mock election data for all 22 counties.
- * In production, this would be fetched from the CEC API.
  */
 export const countyResults: CountyResult[] = [
   {
