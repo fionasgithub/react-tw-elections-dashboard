@@ -15,6 +15,7 @@ const fallbackResults = getCountyResults();
 function DashboardPage() {
   const {
     data: countyVotesSummary,
+    isLoading,
     isError,
     isSuccess,
   } = useCountyVotesSummary({
@@ -41,7 +42,11 @@ function DashboardPage() {
 
       {/* Main Content */}
       <main className="flex-1 grid grid-cols-12 gap-4 min-h-0">
-        <CountyMap topology={countiesTopology} results={results} />
+        <CountyMap
+          topology={countiesTopology}
+          results={results}
+          isLoading={isLoading}
+        />
         <ElectionStats results={results} />
       </main>
     </MainLayout>

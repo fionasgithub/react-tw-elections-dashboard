@@ -10,9 +10,10 @@ import { useMapTooltip } from "@/hooks/useMapTooltip";
 interface CountyMapProps {
   topology: CountiesTopology | null;
   results: CountyResult[];
+  isLoading: boolean;
 }
 
-const CountyMap = ({ topology, results }: CountyMapProps) => {
+const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
   const navigate = useNavigate();
 
   const [activeParties] = useState();
@@ -45,7 +46,7 @@ const CountyMap = ({ topology, results }: CountyMapProps) => {
 
       {/* SVG map */}
       <div className="flex-1 min-h-[360px]">
-        {pathGenerator && features.length > 0 ? (
+        {pathGenerator && features.length > 0 && !isLoading ? (
           <svg viewBox="0 0 800 700" className="w-full h-full max-h-[600px]">
             <defs>
               <pattern
