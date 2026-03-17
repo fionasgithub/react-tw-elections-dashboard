@@ -650,7 +650,7 @@ export const countyResults: CountyResult[] = [
 export const townshipResults: TownshipResult[] = [
   // 臺北市 townships
   {
-    townshipId: "A01",
+    townshipId: "63000010",
     countyId: "63000",
     townshipName: "松山區",
     votingProgress: 100,
@@ -660,7 +660,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 32456,
         voteRate: 41.5,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -686,7 +686,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A02",
+    townshipId: "63000020",
     countyId: "63000",
     townshipName: "信義區",
     votingProgress: 100,
@@ -696,7 +696,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 45678,
         voteRate: 44.2,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -722,7 +722,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A03",
+    townshipId: "63000030",
     countyId: "63000",
     townshipName: "大安區",
     votingProgress: 100,
@@ -732,7 +732,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 52345,
         voteRate: 48.1,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -758,7 +758,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A04",
+    townshipId: "63000040",
     countyId: "63000",
     townshipName: "中山區",
     votingProgress: 100,
@@ -768,7 +768,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 38765,
         voteRate: 40.1,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -794,7 +794,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A05",
+    townshipId: "63000050",
     countyId: "63000",
     townshipName: "中正區",
     votingProgress: 99,
@@ -804,7 +804,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 28765,
         voteRate: 43.2,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -830,7 +830,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A06",
+    townshipId: "63000060",
     countyId: "63000",
     townshipName: "大同區",
     votingProgress: 100,
@@ -847,7 +847,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 19876,
         voteRate: 37.4,
-        elected: false,
+        elected: true,
       },
       {
         name: "張志偉",
@@ -866,7 +866,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A07",
+    townshipId: "63000070",
     countyId: "63000",
     townshipName: "萬華區",
     votingProgress: 100,
@@ -876,7 +876,7 @@ export const townshipResults: TownshipResult[] = [
         party: "DPP",
         votes: 34567,
         voteRate: 43.5,
-        elected: false,
+        elected: true,
       },
       {
         name: "王大明",
@@ -902,7 +902,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A08",
+    townshipId: "63000080",
     countyId: "63000",
     townshipName: "文山區",
     votingProgress: 98,
@@ -912,7 +912,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 42345,
         voteRate: 43.8,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -938,7 +938,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A09",
+    townshipId: "63000090",
     countyId: "63000",
     townshipName: "南港區",
     votingProgress: 100,
@@ -948,7 +948,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 22345,
         voteRate: 41.9,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -974,7 +974,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A10",
+    townshipId: "63000100",
     countyId: "63000",
     townshipName: "內湖區",
     votingProgress: 100,
@@ -984,7 +984,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 48765,
         voteRate: 44.6,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -1010,7 +1010,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A11",
+    townshipId: "63000110",
     countyId: "63000",
     townshipName: "士林區",
     votingProgress: 100,
@@ -1020,7 +1020,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 45678,
         voteRate: 43.1,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -1046,7 +1046,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "A12",
+    townshipId: "63000120",
     countyId: "63000",
     townshipName: "北投區",
     votingProgress: 100,
@@ -1056,7 +1056,7 @@ export const townshipResults: TownshipResult[] = [
         party: "KMT",
         votes: 42345,
         voteRate: 42.8,
-        elected: false,
+        elected: true,
       },
       {
         name: "李小華",
@@ -1083,7 +1083,7 @@ export const townshipResults: TownshipResult[] = [
   },
   // 高雄市 townships (sample)
   {
-    townshipId: "E01",
+    townshipId: "64000010",
     countyId: "64000",
     townshipName: "鹽埕區",
     votingProgress: 100,
@@ -1119,7 +1119,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E02",
+    townshipId: "64000020",
     countyId: "64000",
     townshipName: "鼓山區",
     votingProgress: 100,
@@ -1155,7 +1155,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E03",
+    townshipId: "64000030",
     countyId: "64000",
     townshipName: "左營區",
     votingProgress: 100,
@@ -1191,7 +1191,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E04",
+    townshipId: "64000040",
     countyId: "64000",
     townshipName: "楠梓區",
     votingProgress: 100,
@@ -1227,7 +1227,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E05",
+    townshipId: "64000050",
     countyId: "64000",
     townshipName: "三民區",
     votingProgress: 98,
@@ -1263,7 +1263,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E06",
+    townshipId: "64000060",
     countyId: "64000",
     townshipName: "新興區",
     votingProgress: 100,
@@ -1299,7 +1299,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E07",
+    townshipId: "64000070",
     countyId: "64000",
     townshipName: "前金區",
     votingProgress: 100,
@@ -1335,7 +1335,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E08",
+    townshipId: "64000080",
     countyId: "64000",
     townshipName: "苓雅區",
     votingProgress: 100,
@@ -1371,7 +1371,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E09",
+    townshipId: "64000090",
     countyId: "64000",
     townshipName: "前鎮區",
     votingProgress: 100,
@@ -1407,7 +1407,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E10",
+    townshipId: "64000110",
     countyId: "64000",
     townshipName: "小港區",
     votingProgress: 100,
@@ -1443,7 +1443,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E11",
+    townshipId: "64000120",
     countyId: "64000",
     townshipName: "鳳山區",
     votingProgress: 100,
@@ -1479,7 +1479,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "E12",
+    townshipId: "64000130",
     countyId: "64000",
     townshipName: "林園區",
     votingProgress: 100,
@@ -1516,7 +1516,7 @@ export const townshipResults: TownshipResult[] = [
   },
   // 南投縣 townships
   {
-    townshipId: "M01",
+    townshipId: "10008010",
     countyId: "10008",
     townshipName: "南投市",
     votingProgress: 100,
@@ -1545,7 +1545,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M02",
+    townshipId: "10008020",
     countyId: "10008",
     townshipName: "埔里鎮",
     votingProgress: 100,
@@ -1574,7 +1574,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M03",
+    townshipId: "10008030",
     countyId: "10008",
     townshipName: "草屯鎮",
     votingProgress: 100,
@@ -1603,7 +1603,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M04",
+    townshipId: "10008040",
     countyId: "10008",
     townshipName: "竹山鎮",
     votingProgress: 100,
@@ -1632,7 +1632,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M05",
+    townshipId: "10008050",
     countyId: "10008",
     townshipName: "集集鎮",
     votingProgress: 100,
@@ -1661,7 +1661,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M06",
+    townshipId: "10008060",
     countyId: "10008",
     townshipName: "名間鄉",
     votingProgress: 100,
@@ -1690,7 +1690,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M07",
+    townshipId: "10008070",
     countyId: "10008",
     townshipName: "鹿谷鄉",
     votingProgress: 100,
@@ -1719,7 +1719,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M08",
+    townshipId: "10008080",
     countyId: "10008",
     townshipName: "中寮鄉",
     votingProgress: 100,
@@ -1748,7 +1748,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M09",
+    townshipId: "10008090",
     countyId: "10008",
     townshipName: "魚池鄉",
     votingProgress: 100,
@@ -1777,7 +1777,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M10",
+    townshipId: "10008100",
     countyId: "10008",
     townshipName: "國姓鄉",
     votingProgress: 100,
@@ -1806,7 +1806,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M11",
+    townshipId: "10008110",
     countyId: "10008",
     townshipName: "水里鄉",
     votingProgress: 100,
@@ -1835,7 +1835,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M12",
+    townshipId: "10008120",
     countyId: "10008",
     townshipName: "信義鄉",
     votingProgress: 100,
@@ -1864,7 +1864,7 @@ export const townshipResults: TownshipResult[] = [
     ],
   },
   {
-    townshipId: "M13",
+    townshipId: "10008130",
     countyId: "10008",
     townshipName: "仁愛鄉",
     votingProgress: 100,
