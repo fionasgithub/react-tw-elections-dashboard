@@ -141,7 +141,9 @@ function CountyDetail() {
                 </p>
               </div>
             ) : (
-              <CandidateTable data={countyInfo.candidates} />
+              <div className="max-h-[55vh] min-h-[300px] overflow-auto">
+                <CandidateTable data={countyInfo.candidates} />
+              </div>
             )}
           </div>
 
