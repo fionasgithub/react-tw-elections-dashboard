@@ -32,7 +32,7 @@ function DashboardPage() {
 
   useEffect(() => {
     setCountyResults(results);
-  }, [results]);
+  }, [results, setCountyResults]);
 
   return (
     <MainLayout

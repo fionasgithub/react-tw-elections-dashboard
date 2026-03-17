@@ -1,5 +1,13 @@
-import type { CountyVotesSummary } from "@/models/election.schema";
-import type { CountyResult, Candidate, Party } from "@/types/elections";
+import type {
+  CountyVotesSummary,
+  TownshipVotesSummary,
+} from "@/models/election.schema";
+import type {
+  CountyResult,
+  Candidate,
+  Party,
+  TownshipResult,
+} from "@/types/elections";
 import {
   PARTY_NAMES as PARTY_NAMES_MAP,
   PARTY_COLORS,
@@ -47,12 +55,6 @@ export function transformCountyVotesSummary(
   summaries: CountyVotesSummary[],
 ): CountyResult[] {
   const transformed = summaries.map((summary) => {
-    // 手動替換補選縣市資料
-    const override = SPECIAL_ELECTION_OVERRIDES[summary.countyCode];
-    if (override) {
-      return { countyId: summary.countyCode, ...override };
-    }
-
     const maxVoteShare = Math.max(
       ...summary.candidates.map((c) => c.voteShare),
     );
@@ -81,6 +83,34 @@ export function transformCountyVotesSummary(
       transformed.push({ countyId, ...override });
     }
   }
+
+  return transformed;
+}
+
+export function transformTownshipVotesSummary(
+  summaries: TownshipVotesSummary[],
+): TownshipResult[] {
+  const transformed = summaries.map((summary) => {
+    const maxVoteShare = Math.max(
+      ...summary.candidates.map((c) => c.voteShare),
+    );
+
+    const candidates: Candidate[] = summary.candidates.map((c) => ({
+      name: c.name,
+      party: resolveParty(c.party),
+      votes: c.votes,
+      voteRate: c.voteShare,
+      elected: maxVoteShare > 0 && c.voteShare === maxVoteShare,
+    }));
+
+    return {
+      countyId: summary.countyCode,
+      townshipId: summary.townCode,
+      townshipName: summary.townName,
+      votingProgress: 100,
+      candidates,
+    };
+  });
 
   return transformed;
 }

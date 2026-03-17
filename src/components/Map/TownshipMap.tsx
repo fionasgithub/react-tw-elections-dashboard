@@ -1,22 +1,35 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTaiwanMap } from "@/hooks/useTaiwanMap";
-import { PARTY_COLORS, type Party } from "@/types/elections";
+import {
+  PARTY_COLORS,
+  type Party,
+  type TownshipResult,
+} from "@/types/elections";
 import type { TownsTopology, TownProperties } from "@/types/map";
 import MapLegend from "@/components/Map/MapLegend";
 import MapTooltip from "@/components/Map/MapTooltip";
-import { getWinnerParty, getTownshipsByCounty } from "@/data/electionResults";
 import { useMapTooltip } from "@/hooks/useMapTooltip";
 
 interface TownshipMapProps {
   topology: TownsTopology | null;
   countyId: string;
+  results: TownshipResult[];
 }
 
-const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
-  const townResults = getTownshipsByCounty(countyId);
-  const resultMap = new Map(townResults.map((t) => [t.townshipName, t]));
+const TownshipMap = ({ topology, countyId, results }: TownshipMapProps) => {
+  const resultMap = new Map(results.map((t) => [t.townshipId, t]));
 
-  const [activeParties] = useState();
+  const activeParties = useMemo(() => {
+    const partySet = new Set<Party>();
+    results.reduce((item, rows) => {
+      const winner = rows.candidates.find((c) => c.elected)?.party;
+      if (winner) {
+        item.add(winner);
+      }
+      return item;
+    }, partySet);
+    return Array.from(partySet);
+  }, [results]);
 
   const { features, pathGenerator } = useTaiwanMap<TownProperties>(
     topology,
@@ -49,9 +62,9 @@ const TownshipMap = ({ topology, countyId }: TownshipMapProps) => {
               const props = f.properties as TownProperties;
               const townId = props.TOWNCODE;
               const townName = props.TOWNNAME;
-              const result = resultMap.get(townName);
+              const result = resultMap.get(townId);
               const candidates = result?.candidates ?? [];
-              const winner = getWinnerParty(candidates);
+              const winner = candidates.find((c) => c.elected)?.party;
               const fillColor = winner
                 ? PARTY_COLORS[winner as Party]
                 : "#D3D3D3";
