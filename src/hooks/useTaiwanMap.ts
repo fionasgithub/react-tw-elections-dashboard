@@ -13,26 +13,29 @@ export const useTaiwanMap = <P extends Properties = Properties>(
   objectName: string,
   countyId: string | null = null,
 ) => {
-  return useMemo(() => {
-    if (!topology) return { features: [], pathGenerator: null };
-
+  const allFeatures = useMemo(() => {
+    if (!topology) return [];
     const geojson = topojson.feature(topology, topology.objects[objectName]);
-    const features = (geojson as GeoJSON.FeatureCollection).features;
-    const countyFeatures = features.filter((f) => {
-      if (!countyId) return true;
-      return (f.properties as TownProperties).COUNTYCODE === countyId;
-    });
+    return (geojson as GeoJSON.FeatureCollection).features;
+  }, [topology, objectName]);
 
-    const projection = d3
-      .geoMercator()
-      .fitSize([600, 600], geojson as GeoJSON.FeatureCollection);
+  const filteredFeatures = useMemo(() => {
+    if (!countyId) return allFeatures;
+    return allFeatures.filter(
+      (f) => (f.properties as TownProperties).COUNTYCODE === countyId,
+    );
+  }, [allFeatures, countyId]);
 
-    const collection: GeoJSON.FeatureCollection = {
-      type: "FeatureCollection",
-      features: countyFeatures,
-    };
+  const pathGenerator = useMemo(() => {
+    if (!topology) return null;
+
+    const projection = d3.geoMercator();
 
     if (countyId) {
+      const collection: GeoJSON.FeatureCollection = {
+        type: "FeatureCollection",
+        features: filteredFeatures,
+      };
       projection.fitExtent(
         [
           [30, 30],
@@ -44,10 +47,11 @@ export const useTaiwanMap = <P extends Properties = Properties>(
       projection.center([121, 24]).scale(10000).translate([400, 300]);
     }
 
-    const pathGenerator = d3.geoPath().projection(projection);
-    return {
-      features: countyFeatures,
-      pathGenerator,
-    };
-  }, [topology, objectName, countyId]);
+    return d3.geoPath().projection(projection);
+  }, [topology, countyId, filteredFeatures]);
+
+  return useMemo(
+    () => ({ features: filteredFeatures, pathGenerator }),
+    [filteredFeatures, pathGenerator],
+  );
 };

@@ -17,7 +17,9 @@ interface TownshipMapProps {
 }
 
 const TownshipMap = ({ topology, countyId, results }: TownshipMapProps) => {
-  const resultMap = new Map(results.map((t) => [t.townshipId, t]));
+  const resultMap = useMemo(() => {
+    return new Map(results.map((t) => [t.townshipId, t]));
+  }, [results]);
 
   const activeParties = useMemo(() => {
     const partySet = new Set<Party>();
@@ -39,14 +41,17 @@ const TownshipMap = ({ topology, countyId, results }: TownshipMapProps) => {
 
   // To ensure hovered township is on top, render the stroke properly.
   const [hoveredTownId, setHoveredTownId] = useState<string | null>(null);
-  const sortedFeatures = [
-    ...features.filter(
-      (f) => (f.properties as TownProperties).TOWNCODE !== hoveredTownId,
-    ),
-    ...features.filter(
-      (f) => (f.properties as TownProperties).TOWNCODE === hoveredTownId,
-    ),
-  ];
+  const sortedFeatures = useMemo(() => {
+    if (!hoveredTownId) return features;
+    return [
+      ...features.filter(
+        (f) => (f.properties as TownProperties).TOWNCODE !== hoveredTownId,
+      ),
+      ...features.filter(
+        (f) => (f.properties as TownProperties).TOWNCODE === hoveredTownId,
+      ),
+    ];
+  }, [features, hoveredTownId]);
 
   const { tooltip, handleMouseMove, handleMouseLeave } = useMapTooltip();
 

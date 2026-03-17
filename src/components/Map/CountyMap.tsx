@@ -16,6 +16,10 @@ interface CountyMapProps {
 const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
   const navigate = useNavigate();
 
+  const resultMap = useMemo(() => {
+    return new Map(results.map((r) => [r.countyId, r]));
+  }, [results]);
+
   const activeParties = useMemo(() => {
     const partySet = new Set<Party>();
     results.reduce((item, rows) => {
@@ -36,14 +40,17 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
 
   // To ensure hovered county is on top, render the stroke properly.
   const [hoveredCountyId, setHoveredCountyId] = useState<string | null>(null);
-  const sortedFeatures = [
-    ...features.filter(
-      (f) => (f.properties as CountyProperties).COUNTYCODE !== hoveredCountyId,
-    ),
-    ...features.filter(
-      (f) => (f.properties as CountyProperties).COUNTYCODE === hoveredCountyId,
-    ),
-  ];
+  const sortedFeatures = useMemo(() => {
+    if (!hoveredCountyId) return features;
+    return [
+      ...features.filter(
+        (f) => (f.properties as CountyProperties).COUNTYCODE !== hoveredCountyId,
+      ),
+      ...features.filter(
+        (f) => (f.properties as CountyProperties).COUNTYCODE === hoveredCountyId,
+      ),
+    ];
+  }, [features, hoveredCountyId]);
 
   const { tooltip, handleMouseMove, handleMouseLeave } = useMapTooltip();
 
@@ -83,9 +90,7 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
               const countyId = props.COUNTYCODE;
               const countyName = props.COUNTYNAME;
 
-              const countyResult = results?.find(
-                (r) => r.countyId === countyId,
-              );
+              const countyResult = resultMap.get(countyId);
 
               const candidates = countyResult?.candidates ?? [];
               const isSpecialElection = countyResult?.isSpecialElection;
