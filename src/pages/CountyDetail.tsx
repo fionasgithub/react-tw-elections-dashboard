@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Info, TriangleAlert } from "lucide-react";
 import MainLayout from "@/components/Layout/MainLayout";
@@ -11,13 +11,10 @@ import {
   getCountyResultById,
   getTownshipsByCounty,
 } from "@/data/electionResults";
-import townsTopologyRaw from "@/data/taiwan-towns.json";
 import type { TownsTopology } from "@/types/map";
 import { useTownshipVotesSummary } from "@/hooks/useVotesSummary";
 import { useElectionStore } from "@/store/useElectionStore";
 import { transformTownshipVotesSummary } from "@/utils/electionTransform";
-
-const townsTopology = townsTopologyRaw as unknown as TownsTopology;
 
 function CountyDetail() {
   const { countyId } = useParams<{ countyId: string }>();
@@ -51,6 +48,31 @@ function CountyDetail() {
     }
     return fallbackTownResults;
   }, [townshipVotesSummary, fallbackTownResults]);
+
+  const [townsTopology, setTownsTopology] = useState<TownsTopology | null>(null);
+  const [topologyError, setTopologyError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setTopologyError(null);
+    setTownsTopology(null);
+
+    import("@/data/taiwan-towns.json")
+      .then((mod) => {
+        if (cancelled) return;
+        setTownsTopology(mod.default as unknown as TownsTopology);
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return;
+        setTopologyError(
+          err instanceof Error ? err.message : "載入地圖資料失敗",
+        );
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (!countyInfo) {
     return <CountyNotFound />;
@@ -159,12 +181,20 @@ function CountyDetail() {
 
         {/* Right: Township Map */}
         <div className="lg:col-span-7">
-          {countyId && (
+          {topologyError ? (
+            <div className="bento-cell text-sm text-destructive">
+              地圖資料載入失敗：{topologyError}
+            </div>
+          ) : countyId && townsTopology ? (
             <TownshipMap
               topology={townsTopology}
               countyId={countyId}
               results={townshipResults}
             />
+          ) : (
+            <div className="bento-cell text-sm text-muted-foreground">
+              載入地圖中…
+            </div>
           )}
         </div>
       </div>

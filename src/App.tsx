@@ -1,13 +1,13 @@
-import { useEffect, useMemo } from "react";
+import { Suspense, lazy, useEffect, useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DashboardPage from "@/pages/DashboardPage";
-import CountyDetail from "@/pages/CountyDetail";
 import { getCountyResults } from "@/data/electionResults";
 import { useCountyVotesSummary } from "@/hooks/useVotesSummary";
 import { transformCountyVotesSummary } from "@/utils/electionTransform";
 import { useElectionStore } from "@/store/useElectionStore";
 
 const fallbackResults = getCountyResults();
+const CountyDetail = lazy(() => import("@/pages/CountyDetail"));
 
 function App() {
   const setCountyResults = useElectionStore((state) => state.setCountyResults);
@@ -37,10 +37,14 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/county/:countyId" element={<CountyDetail />} />
-      </Routes>
+      <Suspense
+        fallback={<div className="p-6 text-sm text-muted-foreground">載入中…</div>}
+      >
+        <Routes>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/county/:countyId" element={<CountyDetail />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
