@@ -1,38 +1,18 @@
-import { useMemo, useEffect } from "react";
 import MainLayout from "@/components/Layout/MainLayout";
 import DashboardHeader from "@/components/DashboardPage/Header";
 import CountyMap from "@/components/Map/CountyMap";
 import ElectionStats from "@/components/DashboardPage/ElectionStats";
-import { getCountyResults } from "@/data/electionResults";
 import countiesTopologyRaw from "@/data/taiwan-counties.json";
 import type { CountiesTopology } from "@/types/map";
-import { useCountyVotesSummary } from "@/hooks/useVotesSummary";
-import { transformCountyVotesSummary } from "@/utils/electionTransform";
 import { useElectionStore } from "@/store/useElectionStore";
 
 const countiesTopology = countiesTopologyRaw as unknown as CountiesTopology;
-const fallbackResults = getCountyResults();
 
 function DashboardPage() {
   const isRealTime = true; // placeholder for real-time data
 
-  const setCountyResults = useElectionStore((state) => state.setCountyResults);
-
-  const { data: countyVotesSummary, isLoading } = useCountyVotesSummary({
-    year: 2022,
-    type: "mayor",
-  });
-
-  const results = useMemo(() => {
-    if (countyVotesSummary) {
-      return transformCountyVotesSummary(countyVotesSummary);
-    }
-    return fallbackResults;
-  }, [countyVotesSummary]);
-
-  useEffect(() => {
-    setCountyResults(results);
-  }, [results, setCountyResults]);
+  const results = useElectionStore((state) => state.countyResults);
+  const isLoading = useElectionStore((state) => state.countyResultsLoading);
 
   return (
     <MainLayout
