@@ -71,6 +71,8 @@ components/ui -> 專門放 Shadcn 產出的 UI components
 
 - 地圖資料來源缺漏：理想上應該可以顯示到村里的資訊，但因為[村里界圖](https://data.gov.tw/dataset/7438)的經緯度圖資來源有問題無法下載，故折衷只顯示到鄉鎮市區。
 - 設計稿產出：本來打算利用 [pencil.dev](https://www.pencil.dev/) 快速產出設計稿，但在嘗試使用 vscode 整合時，一直無法產出理想的設計稿，後來改用 antigravity + ui ux pro max skills 就完成了。
+- 特殊事件：2022年嘉義市長選舉延期導致沒資料問題，但因為這個網站目的是顯示實時開票資料，故不補上歷史資料，改顯示本次為開票
+- React Router 部署到 GitHub Pages 會遇到 BASE_URL 是 repo name 的問題，因為使用了 Shadcnui 的 BreadcrumbLink 元件，導致它 redirect 回根目錄 "/"，而不是 "/react-tw-elections-dashboard/"，畫面出現了 404 的問題
 
 ## TODO
 
@@ -84,5 +86,5 @@ components/ui -> 專門放 Shadcn 產出的 UI components
 - [ ] 加上 initial / loading 事件
 - [ ] 檢查有哪些政黨還沒加入 types
 - [ ] 鄉鎮市區變太小的問題（例如高雄市、金門縣、宜蘭縣、基隆市）
-- [ ] 更新 README.md
+- [ ] 更新 README.md (作品說明、Badge)
 - [ ] 撰寫測試

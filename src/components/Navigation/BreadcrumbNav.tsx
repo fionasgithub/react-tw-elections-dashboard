@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -35,8 +36,10 @@ function BreadcrumbNav({ items, className }: Props) {
           return (
             <React.Fragment key={index}>
               <BreadcrumbItem>
-                <BreadcrumbLink href={item.to} aria-label={item.ariaLabel}>
-                  {item.label}
+                <BreadcrumbLink asChild>
+                  <Link to={item.to ?? "/"} aria-label={item.ariaLabel}>
+                    {item.label}
+                  </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
