@@ -27,22 +27,30 @@
 
 ## 使用技術
 
-- React
-  - react-router-dom
-- Shadcn UI
-  - Tailwind CSS
-  - lucide-react (icons)
+- React（React 19）
+  - react-router-dom（路由）
+- 資料與狀態管理
+  - TanStack Query（資料抓取 / 快取）
+  - TanStack Table（表格）
+  - Zustand（全域狀態）
+  - Zod（資料驗證）
+- UI / 樣式
+  - shadcn/ui（元件）
+  - Tailwind CSS（Tailwind v4）
   - Radix UI
-- D3.js
-  - TopoJSON (topojson-client)
+  - lucide-react（icons）
+- 資料視覺化與地理圖資
+  - D3.js
+  - TopoJSON（topojson-client）
 
 ## 開發工具
 
 - TypeScript
 - Vite
 - ESLint
-- Husky + Commitlint
-- npm
+- Husky + Commitlint（Git hooks / commit 規範）
+- Node.js + npm（版本見 `package.json` 的 `engines`）
+- GitHub Actions（部署流程見 `.github/workflows/deploy.yml`）
 
 ## 資料結構
 
@@ -70,6 +78,11 @@ components/ui -> 專門放 Shadcn 產出的 UI components
 - [ ] 用戶會覺得 hover 只有顯示 top 3 會很奇怪嗎
 - [x] 要 link 回 github 專案，讓人家知道是非官方網站
 - [x] 2026 改回 2022，使用真實資料
-- [ ] 檢查 mobile 版本
+- [x] 檢查 mobile 版本
 - [ ] 考慮 SEO 是否要做到用戶輸入「桃園市 開票」就要可以找到？要改用 next 嗎？
-- [ ] 串接 api 要用 tanstack 的 react-query
+- [x] 串接 api 要用 tanstack 的 react-query
+- [ ] 加上 initial / loading 事件
+- [ ] 檢查有哪些政黨還沒加入 types
+- [ ] 鄉鎮市區變太小的問題（例如高雄市、金門縣、宜蘭縣、基隆市）
+- [ ] 更新 README.md
+- [ ] 撰寫測試
