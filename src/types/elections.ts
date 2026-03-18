@@ -6,6 +6,12 @@ export type Party =
   | "PFP" // 親民黨
   | "TSU" // 台灣團結聯盟
   | "GPT" // 綠黨
+  | "RP" // 共和黨
+  | "SSFPP" // 台澎國際法法理建國黨
+  | "TAPP" // 台灣動物保護黨
+  | "TRP" // 台灣維新
+  | "TYP" //天一黨
+  | "DP" // 龍黨
   | "IND" // 無
   | "EMPTY"; // 未分配或無資料
 
@@ -17,6 +23,12 @@ export const PARTY_COLORS: Record<Party, string> = {
   PFP: "#FF9A66",
   TSU: "#D6B890",
   GPT: "#A3C75A",
+  RP: "#C97070",
+  SSFPP: "#88B878",
+  TAPP: "#C87098",
+  TRP: "#D4936A",
+  TYP: "#C8A85C",
+  DP: "#7060B0",
   IND: "#B4BCC4",
   EMPTY: "#D3D3D3",
 };
@@ -29,6 +41,12 @@ export const PARTY_NAMES: Record<Party, string> = {
   PFP: "親民黨",
   TSU: "台灣團結聯盟",
   GPT: "綠黨",
+  RP: "共和黨",
+  SSFPP: "台澎黨",
+  TAPP: "台灣動物保護黨",
+  TRP: "台灣維新",
+  TYP: "天一黨",
+  DP: "龍黨",
   IND: "無",
   EMPTY: "尚未開票/票數相同",
 };
@@ -41,6 +59,12 @@ export const PARTY_SHORT_NAMES: Record<Exclude<Party, "EMPTY">, string> = {
   PFP: "親",
   TSU: "團",
   GPT: "綠",
+  RP: "和",
+  SSFPP: "澎",
+  TAPP: "動",
+  TRP: "維",
+  TYP: "天",
+  DP: "龍",
   IND: "無",
 };
 
