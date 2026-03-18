@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useMemo } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import DashboardPage from "@/pages/DashboardPage";
 import { getCountyResults } from "@/data/electionResults";
 import { useCountyVotesSummary } from "@/hooks/useVotesSummary";
@@ -36,16 +36,18 @@ function App() {
   }, [isLoading, setCountyResultsLoading]);
 
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <HashRouter basename={import.meta.env.BASE_URL}>
       <Suspense
-        fallback={<div className="p-6 text-sm text-muted-foreground">載入中…</div>}
+        fallback={
+          <div className="p-6 text-sm text-muted-foreground">載入中…</div>
+        }
       >
         <Routes>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/county/:countyId" element={<CountyDetail />} />
         </Routes>
       </Suspense>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
