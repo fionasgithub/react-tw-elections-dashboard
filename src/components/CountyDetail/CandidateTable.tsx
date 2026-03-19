@@ -4,6 +4,7 @@ import {
   type ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { Check, User } from "lucide-react";
@@ -29,10 +30,10 @@ interface CandidateTableProps {
 }
 
 const CandidateTable = ({ data }: CandidateTableProps) => {
-  const sorted = useMemo(() => {
-    return [...data].sort((a, b) => b.voteRate - a.voteRate);
-  }, [data]);
-  const maxRate = sorted[0]?.voteRate ?? 0;
+  const maxRate = useMemo(
+    () => Math.max(...data.map((c) => c.voteRate), 0),
+    [data],
+  );
   const numberFormatter = new Intl.NumberFormat("zh-TW");
 
   const columns: ColumnDef<Candidate>[] = [
@@ -105,9 +106,13 @@ const CandidateTable = ({ data }: CandidateTableProps) => {
   ];
 
   const table = useReactTable({
-    data: sorted,
+    data,
     columns,
+    initialState: {
+      sorting: [{ id: "voteRate", desc: true }],
+    },
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   return (
