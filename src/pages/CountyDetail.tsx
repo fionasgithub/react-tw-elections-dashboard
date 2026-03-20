@@ -49,7 +49,9 @@ function CountyDetail() {
     return fallbackTownResults;
   }, [townshipVotesSummary, fallbackTownResults]);
 
-  const [townsTopology, setTownsTopology] = useState<TownsTopology | null>(null);
+  const [townsTopology, setTownsTopology] = useState<TownsTopology | null>(
+    null,
+  );
   const [topologyError, setTopologyError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -131,7 +133,7 @@ function CountyDetail() {
           {/* County name */}
           <div className="bento-cell">
             <h1 className="text-2xl font-bold text-foreground">
-              {countyInfo.countyName}即時選情
+              {countyInfo.countyName}選情
             </h1>
             {!countyInfo.isSpecialElection && (
               <div className="mt-3 flex items-center gap-3">
