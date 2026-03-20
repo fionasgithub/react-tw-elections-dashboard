@@ -81,9 +81,12 @@ function CountyDetail() {
   }
 
   return (
-    <MainLayout containerClassName="flex flex-col gap-4">
+    <MainLayout
+      className="flex flex-col lg:h-screen lg:overflow-hidden"
+      containerClassName="flex w-full min-h-0 flex-1 flex-col gap-4"
+    >
       {/* Header */}
-      <div className="flex flex-between items-center gap-2">
+      <div className="flex shrink-0 flex-between items-center gap-2">
         <BreadcrumbNav
           items={[
             { label: "2022 縣市長選舉", to: "/" },
@@ -97,7 +100,7 @@ function CountyDetail() {
       {/* Back link */}
       <Link
         to="/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+        className="inline-flex shrink-0 items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
       >
         <ArrowLeft className="h-4 w-4" />
         返回全台地圖
@@ -105,7 +108,7 @@ function CountyDetail() {
 
       {/* Special Election Notice Banner */}
       {countyInfo.isSpecialElection && (
-        <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3">
+        <div className="shrink-0 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3">
           <div className="flex items-start gap-3">
             <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
             <div className="space-y-1">
@@ -127,9 +130,9 @@ function CountyDetail() {
       )}
 
       {/* County detail content */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 flex-1 min-h-0">
         {/* Left: Election Results */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="flex min-h-0 flex-col gap-4 lg:col-span-5 lg:min-h-0 lg:overflow-y-auto lg:pr-3">
           {/* County name */}
           <div className="bento-cell">
             <h1 className="text-2xl font-bold text-foreground">
@@ -182,7 +185,7 @@ function CountyDetail() {
         </div>
 
         {/* Right: Township Map */}
-        <div className="lg:col-span-7">
+        <div className="min-h-0 lg:col-span-7">
           {topologyError ? (
             <div className="bento-cell text-sm text-destructive">
               地圖資料載入失敗：{topologyError}
