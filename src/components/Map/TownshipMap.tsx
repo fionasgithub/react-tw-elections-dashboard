@@ -72,7 +72,7 @@ const TownshipMap = ({ topology, countyId, results }: TownshipMapProps) => {
               const winner = candidates.find((c) => c.elected)?.party;
               const fillColor = winner
                 ? PARTY_COLORS[winner as Party]
-                : "#D3D3D3";
+                : PARTY_COLORS.EMPTY;
 
               return (
                 <path

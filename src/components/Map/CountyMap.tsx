@@ -44,10 +44,12 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
     if (!hoveredCountyId) return features;
     return [
       ...features.filter(
-        (f) => (f.properties as CountyProperties).COUNTYCODE !== hoveredCountyId,
+        (f) =>
+          (f.properties as CountyProperties).COUNTYCODE !== hoveredCountyId,
       ),
       ...features.filter(
-        (f) => (f.properties as CountyProperties).COUNTYCODE === hoveredCountyId,
+        (f) =>
+          (f.properties as CountyProperties).COUNTYCODE === hoveredCountyId,
       ),
     ];
   }, [features, hoveredCountyId]);
@@ -104,7 +106,7 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
                 ? "url(#specialElectionPattern)"
                 : winner
                   ? PARTY_COLORS[winner]
-                  : "#D3D3D3";
+                  : PARTY_COLORS.EMPTY;
 
               return (
                 <path
