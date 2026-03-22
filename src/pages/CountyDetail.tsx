@@ -85,91 +85,96 @@ function CountyDetail() {
 
   return (
     <MainLayout
-      className="flex flex-col lg:h-screen lg:overflow-hidden"
-      containerClassName="flex w-full min-h-0 flex-1 flex-col gap-4"
+      className="flex flex-col"
+      containerClassName="flex w-full flex-col gap-0"
     >
       {/* Header */}
-      <div className="flex shrink-0 flex-between items-center gap-2">
-        <BreadcrumbNav
-          items={[
-            { label: "2022 縣市長選舉", to: "/" },
-            { label: countyInfo.countyName },
-          ]}
-        ></BreadcrumbNav>
+      <header className="fixed inset-x-0 w-full top-0 z-50 bg-background shadow-sm">
+        <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-4 py-4 lg:px-8 lg:py-8">
+          <div className="flex shrink-0 items-center justify-between gap-2">
+            <BreadcrumbNav
+              items={[
+                { label: "2022 縣市長選舉", to: "/" },
+                { label: countyInfo.countyName },
+              ]}
+            ></BreadcrumbNav>
 
-        <HeaderActions />
-      </div>
-
-      {/* Back link */}
-      <Link
-        to="/"
-        className="inline-flex shrink-0 items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        返回全台地圖
-      </Link>
-
-      {/* Special Election Notice Banner */}
-      {countyInfo.isSpecialElection && (
-        <NoticeBanner
-          note={countyInfo.note ?? "本次選舉因特殊情況延期，無開票資料。"}
-        />
-      )}
-
-      {/* County detail content */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 flex-1 min-h-0">
-        {/* Left: Election Results */}
-        <div className="flex min-h-0 flex-col gap-4 lg:col-span-5 lg:min-h-0 lg:overflow-y-auto lg:pr-3">
-          {/* County name and vote progress */}
-          <div className="bento-cell">
-            <h1 className="text-2xl font-bold text-foreground">
-              {countyInfo.countyName}選情
-            </h1>
-            {!countyInfo.isSpecialElection && (
-              <VoteProgress progress={countyInfo.votingProgress} />
-            )}
+            <HeaderActions />
           </div>
 
-          {/* Candidates */}
-          <div className="bento-cell">
-            <h2 className="mb-4 text-sm font-semibold text-muted-foreground">
-              候選人得票結果
-            </h2>
-            {countyInfo.isSpecialElection ? (
-              <div className="flex flex-col items-center gap-3 py-8 text-center text-muted-foreground">
-                <TriangleAlert className="h-8 w-8 text-amber-500/50" />
-                <p className="text-sm">本次投票日無候選人開票資料</p>
-              </div>
-            ) : (
-              <div className="max-h-[55vh] min-h-[300px] overflow-auto">
+          {/* Back link */}
+          <Link
+            to="/"
+            className="inline-flex shrink-0 items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            返回全台地圖
+          </Link>
+        </div>
+      </header>
+
+      {/* Main content */}
+      <main className="mt-24 lg:mt-28 flex flex-col gap-4">
+        {/* Special Election Notice Banner */}
+        {countyInfo.isSpecialElection && (
+          <NoticeBanner
+            note={countyInfo.note ?? "本次選舉因特殊情況延期，無開票資料。"}
+          />
+        )}
+
+        {/* County detail content */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 flex-1 min-h-0">
+          {/* Left: Election Results */}
+          <div className="relative z-0 flex min-w-0 flex-col gap-4 lg:col-span-5">
+            {/* County name and vote progress */}
+            <div className="bento-cell">
+              <h1 className="text-2xl font-bold text-foreground">
+                {countyInfo.countyName}選情
+              </h1>
+              {!countyInfo.isSpecialElection && (
+                <VoteProgress progress={countyInfo.votingProgress} />
+              )}
+            </div>
+
+            {/* Candidates */}
+            <div className="bento-cell overflow-x-auto">
+              <h2 className="mb-4 text-sm font-semibold text-muted-foreground">
+                候選人得票結果
+              </h2>
+              {countyInfo.isSpecialElection ? (
+                <div className="flex flex-col items-center gap-3 py-8 text-center text-muted-foreground">
+                  <TriangleAlert className="h-8 w-8 text-amber-500/50" />
+                  <p className="text-sm">本次投票日無候選人開票資料</p>
+                </div>
+              ) : (
                 <CandidateTable data={countyInfo.candidates} />
+              )}
+            </div>
+
+            {/* Footnote */}
+            <FootNote />
+          </div>
+
+          {/* Right: Township Map */}
+          <div className="min-w-0 lg:sticky lg:top-36 lg:z-20 lg:col-span-7 lg:self-start lg:bg-background">
+            {topologyError ? (
+              <div className="bento-cell text-sm text-destructive">
+                地圖資料載入失敗：{topologyError}
+              </div>
+            ) : countyId && townsTopology ? (
+              <TownshipMap
+                topology={townsTopology}
+                countyId={countyId}
+                results={townshipResults}
+              />
+            ) : (
+              <div className="bento-cell text-sm text-muted-foreground">
+                載入地圖中…
               </div>
             )}
           </div>
-
-          {/* Footnote */}
-          <FootNote />
         </div>
-
-        {/* Right: Township Map */}
-        <div className="min-h-0 lg:col-span-7">
-          {topologyError ? (
-            <div className="bento-cell text-sm text-destructive">
-              地圖資料載入失敗：{topologyError}
-            </div>
-          ) : countyId && townsTopology ? (
-            <TownshipMap
-              topology={townsTopology}
-              countyId={countyId}
-              results={townshipResults}
-            />
-          ) : (
-            <div className="bento-cell text-sm text-muted-foreground">
-              載入地圖中…
-            </div>
-          )}
-        </div>
-      </div>
+      </main>
     </MainLayout>
   );
 }
