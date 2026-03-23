@@ -10,7 +10,7 @@ interface HeaderProps {
 const Header = ({ countyName }: HeaderProps) => {
   return (
     <header className="fixed inset-x-0 w-full top-0 z-50 bg-background">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-4 py-4 lg:px-8 lg:py-8">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-4 py-4 md:px-8 md:py-8">
         <div className="flex shrink-0 items-center justify-between gap-2">
           <BreadcrumbNav
             items={[

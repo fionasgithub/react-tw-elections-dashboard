@@ -17,13 +17,11 @@ function DashboardPage() {
   return (
     <MainLayout
       className="flex flex-col lg:h-screen lg:overflow-hidden"
-      containerClassName="w-full flex-1 flex flex-col min-h-0"
+      containerClassName="w-full flex flex-col min-h-0"
     >
-      {/* Header Section */}
       <Header isRealTime={isRealTime} />
 
-      {/* Main Content */}
-      <main className="flex-1 grid grid-cols-12 gap-4 min-h-0">
+      <main className="grid grid-cols-12 gap-4 min-h-0">
         <CountyMap
           topology={countiesTopology}
           results={results}

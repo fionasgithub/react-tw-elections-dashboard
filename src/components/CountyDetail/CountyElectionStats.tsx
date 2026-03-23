@@ -28,7 +28,7 @@ const CountyElectionStats = ({
       </div>
 
       {/* Candidates */}
-      <div className="bento-cell overflow-x-auto">
+      <div className="bento-cell">
         <h2 className="mb-4 text-sm font-semibold text-muted-foreground">
           候選人得票結果
         </h2>

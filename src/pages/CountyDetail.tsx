@@ -63,7 +63,7 @@ function CountyDetail() {
       <Header countyName={countyInfo.countyName} />
 
       {/* Main content */}
-      <main className="mt-24 lg:mt-28 flex flex-col gap-4">
+      <main className="mt-24 md:mt-28 flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 flex-1 min-h-0">
           <CountyElectionStats
             countyName={countyInfo.countyName}
