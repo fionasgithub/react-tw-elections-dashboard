@@ -1,11 +1,11 @@
 import { MapPin } from "lucide-react";
 import HeaderActions from "@/components/Common/HeaderActions";
 
-type Props = {
+interface HeaderProps {
   isRealTime: boolean;
-};
+}
 
-export default function DashboardHeader({ isRealTime }: Props) {
+const Header = ({ isRealTime }: HeaderProps) => {
   return (
     <header className="flex items-center gap-4 mb-6 shrink-0">
       <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-primary/15">
@@ -24,4 +24,6 @@ export default function DashboardHeader({ isRealTime }: Props) {
       <HeaderActions />
     </header>
   );
-}
+};
+
+export default Header;
