@@ -2,17 +2,18 @@ import MainLayout from "@/components/Layout/MainLayout";
 import Header from "@/components/DashboardPage/Header";
 import CountyMap from "@/components/Map/CountyMap";
 import ElectionStats from "@/components/DashboardPage/ElectionStats";
+
+import { useCountyResults } from "@/hooks/useVotesSummary";
+
 import countiesTopologyRaw from "@/data/taiwan-counties.json";
 import type { CountiesTopology } from "@/types/map";
-import { useElectionStore } from "@/store/useElectionStore";
 
 const countiesTopology = countiesTopologyRaw as unknown as CountiesTopology;
 
 function DashboardPage() {
   const isRealTime = true; // placeholder for real-time data
 
-  const results = useElectionStore((state) => state.countyResults);
-  const isLoading = useElectionStore((state) => state.countyResultsLoading);
+  const { data, isLoading } = useCountyResults({ year: 2022, type: "mayor" });
 
   return (
     <MainLayout
@@ -24,10 +25,10 @@ function DashboardPage() {
       <main className="grid grid-cols-12 gap-4 min-h-0">
         <CountyMap
           topology={countiesTopology}
-          results={results}
+          results={data}
           isLoading={isLoading}
         />
-        <ElectionStats results={results} />
+        <ElectionStats results={data} />
       </main>
     </MainLayout>
   );

@@ -1,19 +1,24 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
+
 import MainLayout from "@/components/Layout/MainLayout";
 import CountyElectionStats from "@/components/CountyDetail/CountyElectionStats";
 import CountyNotFound from "@/components/CountyDetail/CountyNotFound";
 import Header from "@/components/CountyDetail/Header";
 import TownshipMap from "@/components/Map/TownshipMap";
+
+import {
+  useCountyResults,
+  useTownshipVotesSummary,
+} from "@/hooks/useVotesSummary";
+import { transformTownshipVotesSummary } from "@/utils/electionTransform";
 import {
   getCountyResultById,
   getTownshipsByCounty,
 } from "@/data/electionResults";
-import type { TownsTopology } from "@/types/map";
-import { useTownshipVotesSummary } from "@/hooks/useVotesSummary";
-import { useElectionStore } from "@/store/useElectionStore";
-import { transformTownshipVotesSummary } from "@/utils/electionTransform";
+
 import townsTopologyRaw from "@/data/taiwan-towns.json";
+import type { TownsTopology } from "@/types/map";
 
 const townsTopology = townsTopologyRaw as unknown as TownsTopology;
 
@@ -21,16 +26,16 @@ function CountyDetail() {
   const { countyId } = useParams<{ countyId: string }>();
   const safeCountyId = countyId ?? "";
 
-  const result = useElectionStore((state) =>
-    state.countyResults.find((r) => r.countyId === safeCountyId),
-  );
+  const { data: countyResults } = useCountyResults({
+    year: 2022,
+    type: "mayor",
+  });
 
-  const fallbackCountyInfo = useMemo(
-    () => (safeCountyId ? getCountyResultById(safeCountyId) : null),
-    [safeCountyId],
-  );
-
-  const countyInfo = result ?? fallbackCountyInfo;
+  const countyInfo = useMemo(() => {
+    if (!safeCountyId) return null;
+    if (!countyResults) return getCountyResultById(safeCountyId);
+    return countyResults?.find((r) => r.countyId === safeCountyId) ?? null;
+  }, [countyResults, safeCountyId]);
 
   const fallbackTownResults = useMemo(
     () => getTownshipsByCounty(safeCountyId),
