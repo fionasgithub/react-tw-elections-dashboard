@@ -14,13 +14,15 @@ const ElectionStats = ({ results }: ElectionStatsProps) => {
   const totalCounties = results.length;
   const countedCounties = results.filter((r) => r.votingProgress > 0).length;
   const avgProgress =
-    results.reduce((sum, r) => sum + r.votingProgress, 0) / totalCounties;
+    totalCounties === 0
+      ? null
+      : results.reduce((sum, r) => sum + r.votingProgress, 0) / totalCounties;
 
   const stats = [
     {
       icon: BarChart3,
       label: "平均開票進度",
-      value: `${avgProgress.toFixed(1)}%`,
+      value: avgProgress === null ? "—" : `${avgProgress.toFixed(1)}%`,
       color: "text-blue-400",
     },
     {
