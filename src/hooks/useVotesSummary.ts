@@ -36,7 +36,10 @@ export function useCountyResults({ year, type }: CountyVotesSummaryParams) {
 
   const { data, isLoading } = useCountyVotesSummary({ year, type });
   return {
-    data: useMemo(() => data ?? fallbackCountyResults, [data]),
+    data: useMemo(
+      () => data ?? fallbackCountyResults,
+      [data, fallbackCountyResults],
+    ),
     isLoading,
   };
 }
@@ -56,7 +59,10 @@ export function useTownshipResults({
   });
 
   return {
-    data: useMemo(() => data ?? fallbackTownResults, [data]),
+    data: useMemo(
+      () => data ?? fallbackTownResults,
+      [data, fallbackTownResults],
+    ),
     isLoading,
   };
 }
