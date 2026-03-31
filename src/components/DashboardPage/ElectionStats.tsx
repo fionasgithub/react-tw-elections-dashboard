@@ -7,9 +7,10 @@ import { getWinnerParty } from "@/data/electionResults";
 
 interface ElectionStatsProps {
   results: CountyResult[];
+  isLoading: boolean;
 }
 
-const ElectionStats = ({ results }: ElectionStatsProps) => {
+const ElectionStats = ({ results, isLoading }: ElectionStatsProps) => {
   // Calculate stats
   const totalCounties = results.length;
   const countedCounties = results.filter((r) => r.votingProgress > 0).length;
@@ -75,12 +76,13 @@ const ElectionStats = ({ results }: ElectionStatsProps) => {
 
   return (
     <div className="col-span-12 lg:col-span-4 flex flex-col gap-4 lg:overflow-y-auto lg:min-h-0 lg:pr-3">
-      <QuickStats stats={stats} />
+      <QuickStats stats={stats} isLoading={isLoading} />
       <PartyMayorBreakdown
         stats={sortedParties}
         totalCounties={totalCounties}
+        isLoading={isLoading}
       />
-      <CountyWinnersList stats={latestCountyWinners} />
+      <CountyWinnersList stats={latestCountyWinners} isLoading={isLoading} />
     </div>
   );
 };

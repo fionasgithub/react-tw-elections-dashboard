@@ -1,3 +1,5 @@
+import { Skeleton } from "@/components/ui/skeleton";
+
 interface QuickStatsProps {
   stats: {
     icon: React.ComponentType<{ className?: string }>;
@@ -5,9 +7,10 @@ interface QuickStatsProps {
     value: string;
     color: string;
   }[];
+  isLoading: boolean;
 }
 
-const QuickStats = ({ stats }: QuickStatsProps) => {
+const QuickStats = ({ stats, isLoading }: QuickStatsProps) => {
   return (
     <div className="bento-cell">
       <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
@@ -23,7 +26,11 @@ const QuickStats = ({ stats }: QuickStatsProps) => {
             <div className="flex-1">
               <p className="text-xs text-muted-foreground">{stat.label}</p>
               <p className="text-lg font-bold tabular-nums text-foreground">
-                {stat.value}
+                {isLoading ? (
+                  <Skeleton className="h-5 w-10 mt-1" />
+                ) : (
+                  stat.value
+                )}
               </p>
             </div>
           </div>

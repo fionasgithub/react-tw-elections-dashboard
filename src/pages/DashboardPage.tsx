@@ -28,7 +28,7 @@ function DashboardPage() {
           results={data}
           isLoading={isLoading}
         />
-        <ElectionStats results={data} />
+        <ElectionStats results={data} isLoading={isLoading} />
       </main>
     </MainLayout>
   );

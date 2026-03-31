@@ -1,15 +1,19 @@
 import { useNavigate } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PARTY_COLORS, type Party } from "@/types/elections";
 
 interface CountyWinnersListProps {
-  countyId: string;
-  countyName: string;
-  winner: string;
-  party: Party;
-  voteRate: number;
+  stats: {
+    countyId: string;
+    countyName: string;
+    winner: string;
+    party: Party;
+    voteRate: number;
+  }[];
+  isLoading: boolean;
 }
 
-const CountyWinnersList = ({ stats }: { stats: CountyWinnersListProps[] }) => {
+const CountyWinnersList = ({ stats, isLoading }: CountyWinnersListProps) => {
   const navigate = useNavigate();
 
   return (
@@ -17,36 +21,45 @@ const CountyWinnersList = ({ stats }: { stats: CountyWinnersListProps[] }) => {
       <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         最新開票結果
       </h3>
-      <div className="space-y-2 max-h-[300px] overflow-y-auto">
-        {stats.map((stat) => {
-          return (
-            <div
-              key={stat.countyId}
-              className="flex items-center gap-2 rounded-md bg-muted/50 px-3 py-2 text-sm cursor-pointer hover:bg-muted transition-colors"
-              onClick={() => {
-                navigate(`/county/${stat.countyId}`);
-              }}
-            >
-              <span
-                className="party-dot"
-                style={{
-                  backgroundColor: PARTY_COLORS[stat.party],
-                  width: 8,
-                  height: 8,
+
+      {isLoading ? (
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+        </div>
+      ) : (
+        <div className="space-y-2 max-h-[300px] overflow-y-auto">
+          {stats.map((stat) => {
+            return (
+              <div
+                key={stat.countyId}
+                className="flex items-center gap-2 rounded-md bg-muted/50 px-3 py-2 text-sm cursor-pointer hover:bg-muted transition-colors"
+                onClick={() => {
+                  navigate(`/county/${stat.countyId}`);
                 }}
-              />
-              <span className="font-medium text-foreground">
-                {stat.countyName}
-              </span>
-              <span className="text-muted-foreground">—</span>
-              <span className="text-muted-foreground">{stat.winner}</span>
-              <span className="ml-auto font-bold tabular-nums text-foreground">
-                {stat.voteRate.toFixed(1)}%
-              </span>
-            </div>
-          );
-        })}
-      </div>
+              >
+                <span
+                  className="party-dot"
+                  style={{
+                    backgroundColor: PARTY_COLORS[stat.party],
+                    width: 8,
+                    height: 8,
+                  }}
+                />
+                <span className="font-medium text-foreground">
+                  {stat.countyName}
+                </span>
+                <span className="text-muted-foreground">—</span>
+                <span className="text-muted-foreground">{stat.winner}</span>
+                <span className="ml-auto font-bold tabular-nums text-foreground">
+                  {stat.voteRate.toFixed(1)}%
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
