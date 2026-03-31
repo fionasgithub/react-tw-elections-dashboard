@@ -32,14 +32,9 @@ export function useTownshipVotesSummary(params: TownshipVotesSummaryParams) {
 }
 
 export function useCountyResults({ year, type }: CountyVotesSummaryParams) {
-  const fallbackCountyResults = getCountyResults();
-
   const { data, isLoading } = useCountyVotesSummary({ year, type });
   return {
-    data: useMemo(
-      () => data ?? fallbackCountyResults,
-      [data, fallbackCountyResults],
-    ),
+    data: useMemo(() => data ?? getCountyResults(), [data]),
     isLoading,
   };
 }
@@ -49,9 +44,6 @@ export function useTownshipResults({
   type,
   countyCode,
 }: TownshipVotesSummaryParams) {
-  const fallbackTownResults = countyCode
-    ? getTownshipsByCounty(countyCode)
-    : [];
   const { data, isLoading } = useTownshipVotesSummary({
     year,
     type,
@@ -60,8 +52,8 @@ export function useTownshipResults({
 
   return {
     data: useMemo(
-      () => data ?? fallbackTownResults,
-      [data, fallbackTownResults],
+      () => data ?? (countyCode ? getTownshipsByCounty(countyCode) : []),
+      [data, countyCode],
     ),
     isLoading,
   };
