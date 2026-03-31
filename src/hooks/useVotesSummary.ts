@@ -7,10 +7,11 @@ import {
   fetchCountyVotesSummary,
   fetchTownshipVotesSummary,
 } from "@/api/election";
-import { transformCountyVotesSummary } from "@/utils/electionTransform";
-import { getCountyResults } from "@/data/electionResults";
-
-const fallbackCountyResults = getCountyResults();
+import {
+  transformCountyVotesSummary,
+  transformTownshipVotesSummary,
+} from "@/utils/electionTransform";
+import { getCountyResults, getTownshipsByCounty } from "@/data/electionResults";
 
 export function useCountyVotesSummary(params: CountyVotesSummaryParams) {
   return useQuery({
@@ -26,13 +27,36 @@ export function useTownshipVotesSummary(params: TownshipVotesSummaryParams) {
     queryKey: ["township-votes-summary", params],
     queryFn: () => fetchTownshipVotesSummary(params),
     enabled: !!params.year && !!params.type && !!params.countyCode,
+    select: (data) => transformTownshipVotesSummary(data),
   });
 }
 
 export function useCountyResults({ year, type }: CountyVotesSummaryParams) {
+  const fallbackCountyResults = getCountyResults();
+
   const { data, isLoading } = useCountyVotesSummary({ year, type });
   return {
     data: useMemo(() => data ?? fallbackCountyResults, [data]),
+    isLoading,
+  };
+}
+
+export function useTownshipResults({
+  year,
+  type,
+  countyCode,
+}: TownshipVotesSummaryParams) {
+  const fallbackTownResults = countyCode
+    ? getTownshipsByCounty(countyCode)
+    : [];
+  const { data, isLoading } = useTownshipVotesSummary({
+    year,
+    type,
+    countyCode,
+  });
+
+  return {
+    data: useMemo(() => data ?? fallbackTownResults, [data]),
     isLoading,
   };
 }

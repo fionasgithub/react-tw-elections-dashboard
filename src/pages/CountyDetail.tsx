@@ -7,15 +7,8 @@ import CountyNotFound from "@/components/CountyDetail/CountyNotFound";
 import Header from "@/components/CountyDetail/Header";
 import TownshipMap from "@/components/Map/TownshipMap";
 
-import {
-  useCountyResults,
-  useTownshipVotesSummary,
-} from "@/hooks/useVotesSummary";
-import { transformTownshipVotesSummary } from "@/utils/electionTransform";
-import {
-  getCountyResultById,
-  getTownshipsByCounty,
-} from "@/data/electionResults";
+import { useCountyResults, useTownshipResults } from "@/hooks/useVotesSummary";
+import { getCountyResultById } from "@/data/electionResults";
 
 import townsTopologyRaw from "@/data/taiwan-towns.json";
 import type { TownsTopology } from "@/types/map";
@@ -37,23 +30,11 @@ function CountyDetail() {
     return countyResults?.find((r) => r.countyId === safeCountyId) ?? null;
   }, [countyResults, safeCountyId]);
 
-  const fallbackTownResults = useMemo(
-    () => getTownshipsByCounty(safeCountyId),
-    [safeCountyId],
-  );
-
-  const { data: townshipVotesSummary } = useTownshipVotesSummary({
+  const { data: townshipResults } = useTownshipResults({
     year: 2022,
     type: "mayor",
     countyCode: safeCountyId,
   });
-
-  const townshipResults = useMemo(() => {
-    if (townshipVotesSummary) {
-      return transformTownshipVotesSummary(townshipVotesSummary);
-    }
-    return fallbackTownResults;
-  }, [townshipVotesSummary, fallbackTownResults]);
 
   if (!countyInfo) {
     return <CountyNotFound />;
