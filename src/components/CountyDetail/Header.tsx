@@ -25,7 +25,7 @@ const Header = ({ countyName }: HeaderProps) => {
         {/* Back link */}
         <Link
           to="/"
-          className="inline-flex shrink-0 items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
+          className="self-start inline-flex shrink-0 items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
         >
           <ArrowLeft className="h-4 w-4" />
           返回全台地圖
