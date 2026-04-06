@@ -6,6 +6,12 @@ import type { CountiesTopology, CountyProperties } from "@/types/map";
 import MapLegend from "@/components/Map/MapLegend";
 import MapTooltip from "@/components/Map/MapTooltip";
 import { useMapTooltip } from "@/hooks/useMapTooltip";
+import {
+  OFFSHORE_COUNTY_CODES,
+  OFFSHORE_LABELS,
+  makeInsetPathGenerator,
+} from "@/lib/countyMapInsets";
+import type { Feature, Geometry } from "geojson";
 
 interface CountyMapProps {
   topology: CountiesTopology | null;
@@ -38,21 +44,32 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
     null,
   );
 
+  const mainlandFeatures = useMemo(() => {
+    return features.filter(
+      (f) =>
+        !OFFSHORE_COUNTY_CODES.includes(
+          (f.properties as CountyProperties).COUNTYCODE,
+        ),
+    );
+  }, [features]);
+
   // To ensure hovered county is on top, render the stroke properly.
   const [hoveredCountyId, setHoveredCountyId] = useState<string | null>(null);
+
   const sortedFeatures = useMemo(() => {
-    if (!hoveredCountyId) return features;
+    if (!hoveredCountyId) return mainlandFeatures;
+
     return [
-      ...features.filter(
+      ...mainlandFeatures.filter(
         (f) =>
           (f.properties as CountyProperties).COUNTYCODE !== hoveredCountyId,
       ),
-      ...features.filter(
+      ...mainlandFeatures.filter(
         (f) =>
           (f.properties as CountyProperties).COUNTYCODE === hoveredCountyId,
       ),
     ];
-  }, [features, hoveredCountyId]);
+  }, [mainlandFeatures, hoveredCountyId]);
 
   const { tooltip, handleMouseMove, handleMouseLeave } = useMapTooltip();
 
@@ -63,37 +80,25 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
         <span className="text-xs text-muted-foreground">點擊縣市查看詳情</span>
       </div>
 
-      {/* SVG map */}
-      <div className="flex-1 min-h-[360px]">
-        {pathGenerator && features.length > 0 && !isLoading ? (
-          <svg viewBox="0 0 800 700" className="w-full h-full max-h-[600px]">
-            <defs>
-              <pattern
-                id="specialElectionPattern"
-                patternUnits="userSpaceOnUse"
-                width="10"
-                height="10"
-                patternTransform="rotate(45 0 0)"
-              >
-                <rect width="10" height="10" fill="#1e2035" />
-                <line
-                  x1="0"
-                  y1="5"
-                  x2="10"
-                  y2="5"
-                  stroke="#C9961C"
-                  strokeWidth="3"
-                  opacity="0.7"
-                />
-              </pattern>
-            </defs>
-            {sortedFeatures.map((f) => {
-              const props = f.properties as CountyProperties;
+      <div className="flex flex-wrap gap-2">
+        {/* Offshore counties maps */}
+        <div className="flex md:flex-col order-1 md:order-0 gap-2">
+          {pathGenerator &&
+            OFFSHORE_COUNTY_CODES.map((code) => {
+              const feature = features.find(
+                (f) => (f.properties as CountyProperties).COUNTYCODE === code,
+              ) as Feature<Geometry, CountyProperties> | undefined;
+              if (!feature) return null;
+              const insetPathGenerator = makeInsetPathGenerator(
+                feature,
+                140,
+                110,
+              );
+              const props = feature.properties as CountyProperties;
               const countyId = props.COUNTYCODE;
-              const countyName = props.COUNTYNAME;
 
               const countyResult = resultMap.get(countyId);
-
+              const countyName = props.COUNTYNAME;
               const candidates = countyResult?.candidates ?? [];
               const isSpecialElection = countyResult?.isSpecialElection;
               const note = countyResult?.note;
@@ -101,43 +106,126 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
               const winner = countyResult?.candidates.find(
                 (c) => c.elected,
               )?.party;
-
-              const fillColor = isSpecialElection
-                ? "url(#specialElectionPattern)"
-                : winner
-                  ? PARTY_COLORS[winner]
-                  : PARTY_COLORS.EMPTY;
+              const fill = winner ? PARTY_COLORS[winner] : PARTY_COLORS.EMPTY;
 
               return (
-                <path
-                  key={countyId ?? f.id}
-                  d={pathGenerator(f) ?? undefined}
-                  fill={fillColor}
-                  className="map-path"
-                  onMouseEnter={(e) => {
-                    handleMouseMove(
-                      e,
-                      countyName,
-                      candidates,
-                      isSpecialElection,
-                      note,
-                    );
-                    setHoveredCountyId(countyId);
-                  }}
-                  onMouseLeave={() => {
-                    handleMouseLeave();
-                    setHoveredCountyId(null);
-                  }}
-                  onClick={() => {
-                    navigate(`/county/${countyId}`);
-                  }}
-                />
+                <div
+                  key={code}
+                  className="relative border-2 rounded overflow-hidden bg-background w-auto md:w-[140px] h-[110px]"
+                >
+                  <svg
+                    className="block w-full h-auto"
+                    viewBox="0 0 140 110"
+                    onMouseEnter={(e) => {
+                      handleMouseMove(
+                        e,
+                        countyName,
+                        candidates,
+                        isSpecialElection,
+                        note,
+                      );
+                      setHoveredCountyId(countyId);
+                    }}
+                    onMouseLeave={() => {
+                      handleMouseLeave();
+                      setHoveredCountyId(null);
+                    }}
+                    onClick={() => {
+                      navigate(`/county/${countyId}`);
+                    }}
+                  >
+                    <path
+                      className="map-path"
+                      d={insetPathGenerator(feature) ?? undefined}
+                      fill={fill}
+                      stroke="currentColor"
+                      strokeWidth={0.5}
+                    ></path>
+                  </svg>
+                  <span className="pointer-events-none absolute inset-0 flex text-sm font-medium text-foreground/80 drop-shadow-sm p-2">
+                    {OFFSHORE_LABELS[code]}
+                  </span>
+                </div>
               );
             })}
-          </svg>
-        ) : (
-          <p className="text-muted-foreground text-sm">載入地圖中…</p>
-        )}
+        </div>
+
+        {/* Mainland map */}
+        <div className="flex-1 min-h-[360px]">
+          {pathGenerator && sortedFeatures.length > 0 && !isLoading ? (
+            <svg viewBox="0 0 800 700" className="w-full h-full max-h-[600px]">
+              <defs>
+                <pattern
+                  id="specialElectionPattern"
+                  patternUnits="userSpaceOnUse"
+                  width="10"
+                  height="10"
+                  patternTransform="rotate(45 0 0)"
+                >
+                  <rect width="10" height="10" fill="#1e2035" />
+                  <line
+                    x1="0"
+                    y1="5"
+                    x2="10"
+                    y2="5"
+                    stroke="#C9961C"
+                    strokeWidth="3"
+                    opacity="0.7"
+                  />
+                </pattern>
+              </defs>
+              {sortedFeatures.map((f) => {
+                const props = f.properties as CountyProperties;
+                const countyId = props.COUNTYCODE;
+                const countyName = props.COUNTYNAME;
+
+                const countyResult = resultMap.get(countyId);
+
+                const candidates = countyResult?.candidates ?? [];
+                const isSpecialElection = countyResult?.isSpecialElection;
+                const note = countyResult?.note;
+
+                const winner = countyResult?.candidates.find(
+                  (c) => c.elected,
+                )?.party;
+
+                const fillColor = isSpecialElection
+                  ? "url(#specialElectionPattern)"
+                  : winner
+                    ? PARTY_COLORS[winner]
+                    : PARTY_COLORS.EMPTY;
+
+                return (
+                  <path
+                    key={countyId ?? f.id}
+                    d={pathGenerator(f) ?? undefined}
+                    fill={fillColor}
+                    className="map-path"
+                    onMouseEnter={(e) => {
+                      handleMouseMove(
+                        e,
+                        countyName,
+                        candidates,
+                        isSpecialElection,
+                        note,
+                      );
+                      setHoveredCountyId(countyId);
+                    }}
+                    onMouseLeave={() => {
+                      handleMouseLeave();
+                      setHoveredCountyId(null);
+                    }}
+                    onClick={() => {
+                      navigate(`/county/${countyId}`);
+                    }}
+                  />
+                );
+              })}
+            </svg>
+          ) : (
+            <p className="text-muted-foreground text-sm">載入地圖中…</p>
+          )}
+        </div>
       </div>
 
       {/* Legend */}

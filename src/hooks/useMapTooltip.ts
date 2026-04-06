@@ -15,7 +15,7 @@ export function useMapTooltip() {
 
   const handleMouseMove = useCallback(
     (
-      e: React.MouseEvent<SVGPathElement, MouseEvent>,
+      e: React.MouseEvent<SVGElement, MouseEvent>,
       name: string,
       candidates: Candidate[],
       isSpecialElection?: boolean,
