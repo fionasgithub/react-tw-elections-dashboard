@@ -152,7 +152,7 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
         </div>
 
         {/* Mainland map */}
-        <div className="flex-1 min-h-[360px]">
+        <div className="flex-1 min-h-[360px] max-h-[500px]">
           {pathGenerator && sortedFeatures.length > 0 && !isLoading ? (
             <svg viewBox="0 0 800 700" className="w-full h-full max-h-[600px]">
               <defs>
