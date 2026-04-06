@@ -80,10 +80,11 @@ const CountyMap = ({ topology, results, isLoading }: CountyMapProps) => {
         <span className="text-xs text-muted-foreground">點擊縣市查看詳情</span>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-1 flex-wrap gap-2">
         {/* Offshore counties maps */}
         <div className="flex md:flex-col order-1 md:order-0 gap-2">
-          {pathGenerator &&
+          {!isLoading &&
+            OFFSHORE_COUNTY_CODES.length > 0 &&
             OFFSHORE_COUNTY_CODES.map((code) => {
               const feature = features.find(
                 (f) => (f.properties as CountyProperties).COUNTYCODE === code,
